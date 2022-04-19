@@ -1,4 +1,5 @@
-let path = "http://localhost:63342/comfy_ai_web"
+//let path = "http://localhost:63342/comfy_ai_web"
+let path = "https://cybermancy.org/comfyai"
 
 //execute immediately at runtime
 let chat_data;
