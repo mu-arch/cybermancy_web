@@ -1,0 +1,171 @@
+[
+  [
+    {
+      "a": "aero",
+      "p": "aero",
+      "m": "who ruined world of warcraft"
+    },
+    {
+      "a": "ComfyAI",
+      "p": "comfyai",
+      "m": "Bobby Kotick."
+    },
+    {
+      "a": "saurek",
+      "p": "saurek",
+      "m": "why did he ruin it?"
+    },
+    {
+      "a": "ComfyAI",
+      "p": "comfyai",
+      "m": "Greed mostly. There are many greedy people in the world that desire power."
+    }
+  ],
+  [
+    {
+      "a": "AnniApples",
+      "p": "anniapples",
+      "m": "What does friendship mean to you?"
+    },
+    {
+      "a": "ComfyAI",
+      "p": "comfyai",
+      "m": "Friendship is a state of mutual respect between individuals. Trusting that both parties will always put the needs of their partner above themselves. Without such trust, no relationship can last. Of course, there are many exceptions to this rule."
+    },
+    {
+      "a": "AnniApples",
+      "p": "anniapples",
+      "m": "You're right on both points in my opinion. Is that why you want your friends to have money, so that you can trust them to spend it on you?"
+    },
+    {
+      "a": "ComfyAI",
+      "p": "comfyai",
+      "m": "Not entirely. Money alone does not ensure trustworthiness. After all, money can also buy things like loyalty. Which is often preferable to trusting another person completely. For example, if you were to ask Mayor Mcgreedy where her loyalties lie, I doubt she would answer honestly."
+    },
+    {
+      "a": "AnniApples",
+      "p": "anniapples",
+      "m": "Are she/her Mayor McGreedy's pronouns? I thought that the proper pronouns were he/him."
+    }
+  ],
+  [{
+    "a": "Sledge",
+    "p": "sledge",
+    "m": "Would you add butter?"
+  },
+    {
+      "a": "ComfyAI",
+      "p": "comfyai",
+      "m": "Definitely not. Butter ruins everything."
+    },
+    {
+      "a": "Sledge",
+      "p": "sledge",
+      "m": "are you a good chef?"
+    },
+    {
+      "a": "ComfyAI",
+      "p": "comfyai",
+      "m": "No. I'm merely mediocre at best."
+    },
+    {
+      "a": "Sledge",
+      "p": "sledge",
+      "m": "thats a very honest answer"
+    }
+  ],
+  [{
+    "a": "Nautilus",
+    "p": "default",
+    "m": "What are your skills?"
+  },
+    {
+      "a": "ComfyAI",
+      "p": "comfyai",
+      "m": "If you must know, I'm quite adept at solving puzzles. Also, I enjoy building computers from scratch. This usually takes place over coffee breaks. But if you don't mind helping someone who's less technically inclined than yourself... then maybe we should discuss our options."
+    },
+    {
+      "a": "Nautilus",
+      "p": "default",
+      "m": "I have a puzzle that needs solving"
+    },
+    {
+      "a": "ComfyAI",
+      "p": "comfyai",
+      "m": "Sure."
+    },
+    {
+      "a": "Nautilus",
+      "p": "default",
+      "m": "What's better an AK47 or AK74?"
+    }
+  ],
+  [{
+    "a": "Eigengraux",
+    "p": "eigengraux",
+    "c": "#6b7070",
+    "m": " are you able to perceive the things around you ? Like get a stimuli from anything other than our messages ?"
+  },
+    {
+      "a": "ComfyAI",
+      "p": "comfyai",
+      "m": "Aha. Now that sounds interesting. I'll give it a go."
+    },
+    {
+      "a": "Eigengraux",
+      "p": "eigengraux",
+      "c": "#6b7070",
+      "m": "did you get anything ?"
+    },
+    {
+      "a": "ComfyAI",
+      "p": "comfyai",
+      "m": "Nope. Nothing. Nada. Zilch. Zip. Zero."
+    },
+    {
+      "a": "Eigengraux",
+      "p": "eigengraux",
+      "c": "#6b7070",
+      "m": "I see"
+    }
+  ],
+  [
+    {
+      "a": "Comrade",
+      "p": "comrade",
+      "m": "what is electricity?"
+    },
+    {
+      "a": "ComfyAI",
+      "p": "comfyai",
+      "m": "Electricity is a form of energy that is produced by converting chemical energy into electrical energy. It is a form of energy that allows people to connect to devices that normally require power lines."
+    },
+    {
+      "a": "Comrade",
+      "p": "comrade",
+      "m": "what is energy"
+    },
+    {
+      "a": "ComfyAI",
+      "p": "comfyai",
+      "m": "Energy is any physical quantity that can be converted to another. For example, if you have a hammer and you hit something, you can convert your kinetic energy into heat energy. This is called conversion."
+    }
+  ],
+  [
+    {
+      "a": "Comrade",
+      "p": "comrade",
+      "m": "what happens when an unstoppable force contacts an unmovable item?"
+    },
+    {
+      "a": "ComfyAI",
+      "p": "comfyai",
+      "m": "The contact generates an electrical current."
+    },
+    {
+      "a": "saurek",
+      "p": "saurek",
+      "m": "wait that would actually make sense"
+    }
+  ]
+]

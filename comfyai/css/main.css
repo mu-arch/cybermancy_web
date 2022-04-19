@@ -1,0 +1,653 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: 'import';
+  src: url('../font/regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'import';
+  src: url('../font/medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'discord';
+  src: url('../font/regular_discord_whitney.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'discord';
+  src: url('../font/medium_discord_whitney.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+html {
+  font-family: "import", arial, sans-serif;
+}
+
+.page-body {
+  margin: auto;
+  padding: 0 80px;
+}
+
+.above-fold {
+  overflow: hidden;
+  position: relative;
+  background-image: linear-gradient(110deg, rgba(219, 222, 231, 0.4), rgba(45, 69, 115, 0.55));
+  height: 680px;
+}
+
+
+nav {
+  margin: auto;
+  padding: 40px 0 0 0;
+}
+
+nav .right-logo {
+  float:right;
+  padding: 12px 0;
+  color: #3f3f3f;
+}
+
+.new {
+  background: rgba(0, 0, 0, 0.8);
+  box-shadow: 0 2px 10px rgba(0,0,0,.15);
+  text-shadow: 0 0 10px rgba(0,0,0,.4);
+  color: #fff;
+  border-radius: 200px;
+  padding: 4px 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  vertical-align: top;
+  margin: 13px 30px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.nav-links {
+  display: inline-block;
+  position: relative;
+  top: -18px;
+  left: 15px;
+}
+
+.nav-links a:first-child {
+  font-weight: 900;
+  color: #000;
+}
+
+nav a {
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: .5px;
+  font-size: 12px;
+  padding: 9px 10px 7px 10px;
+  display: inline-block;
+  cursor: pointer;
+  color: rgba(0,0,0,.5);
+  text-decoration: none;
+  border-radius: 4px;
+  border: 1px solid transparent;
+}
+
+nav a:hover {
+  border: 1px solid #c5c4c3;
+  background: linear-gradient(#fbf9f8, #f5f2f1);
+  box-shadow: 0 2px 3px rgba(193, 193, 193, 0.35);
+  color: #000;
+}
+
+#logo {
+  height: 45px;
+  width: 45px;
+  border-radius: 2000px;
+  background-image: url("../icon.png");
+  background-size: 100%;
+  display: inline-block;
+  cursor: pointer;
+
+}
+
+
+.usable {
+  border: 1px solid #c5c4c3;
+  background: linear-gradient(#fbf9f8, #f5f2f1);
+  box-shadow: 0 2px 3px rgba(193, 193, 193, 0.35);
+  display: inline-block;
+  padding: 9px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 100ms;
+  font-weight: 500;
+
+}
+
+.usable:hover {
+  border: 1px solid #b8b8b8;
+  background: linear-gradient(#fff, #f2f1f0);
+  transform: scale(1.025)
+}
+
+h1 {
+  font-size: 60px;
+  font-weight: 500;
+  padding-bottom: 30px;
+  line-height: 60px;
+  max-width: 450px;
+}
+
+object {
+  position: absolute;
+  top: -170px;
+  left: -170px;
+  height: 1000px;
+  z-index: -99;
+  opacity: 0;
+}
+
+header {
+  height: 380px;
+  margin:50px auto 80px auto;
+}
+
+.uber-header {
+  display: inline-block;
+  float:left;
+  margin-top: 30px;
+}
+
+.uber-header p {
+  font-size: 26px;
+  font-weight: 500;
+  max-width: 470px;
+  line-height: 40px;
+  color: #132552;
+}
+
+
+.button-special {
+  padding: 13px 30px 14px 30px !important;
+  background: #8a9de0 linear-gradient(180deg, #5066b6, #362ea2);
+  color: #fff!important;
+  text-transform: uppercase;
+  box-shadow: 0px 10px 10px rgba(0,0,0,.25);
+  margin: 45px 0;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 1px;
+  border-radius: 5px;
+  text-decoration: none;
+  display: inline-block;
+  border: 1px solid #5463a1;
+  cursor: pointer;
+}
+
+.button-special:hover {
+  background: #8a9de0 linear-gradient(180deg, #362ea2, #5066b6);
+}
+
+.button-special span {
+  display: inline-block;
+  height: 24px;
+  width: 24px;
+  vertical-align: -7px;
+  margin-right: 15px;
+  background-repeat: no-repeat;
+}
+
+
+a span {
+  display: inline-block;
+  height: 18px;
+  width: 18px;
+  vertical-align: -5px;
+  margin-right: 10px;
+  background-repeat: no-repeat;
+}
+
+
+b {
+  color: rgb(46, 47, 41);
+  font-weight: 500;
+}
+
+
+.chat-message-uber {
+  position: absolute;
+  left: 650px;
+  top: 100px;
+  padding-top: 30px;
+  padding-left: 30px;
+  width: 100%;
+  mask-image: linear-gradient(to bottom, black 0% , black 85% ,transparent 98%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0% , black 85% ,transparent 98%, transparent 100%);
+  height: 515px;
+}
+
+.chat-block {
+  display: inline-block;
+  margin-right: 100px;
+  float:left;
+  transition: all 500ms;
+  transition-timing-function: ease-out;
+
+}
+
+.chat-message {
+  background-color: #36393f;
+  border-radius: 8px;
+  width: 289px;
+  margin-bottom: 15px;
+  transition: all 1250ms;
+  transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+  position: relative;
+}
+
+.chat-message .pfp {
+  float:left;
+  height: 35px;
+  width: 35px;
+  border-radius: 500px;
+  margin: 15px;
+  display: inline-block;
+}
+
+.message-bg-special {
+  background-color: #272a2d;
+  border: 2px solid #125db0;
+}
+
+.message-right {
+  font-family: discord, sans-serif;
+  float:left;
+  display: inline-block;
+  margin: 10px 0 0 0;
+  padding-right: 15px;
+  max-width: 220px;
+  margin-bottom: 13px;
+}
+
+.name-dummy {
+  font-size: 14px;
+  color: rgb(205, 229, 235);
+  margin-right: 4px;
+  display: inline-block;
+  font-weight: 500;
+}
+
+.name-bot {
+  color: rgb(123, 255, 209)!important;
+}
+
+.time-dummy {
+  color: rgb(220, 221, 222);
+  font-size: 10px;
+  display: inline-block;
+}
+
+.chat-message p {
+  display: block;
+  color: rgb(220, 221, 222);
+  font-size: 14px;
+}
+
+.landing-extended {
+  box-shadow: 0px -10px 10px rgba(0,0,0,.05);
+  background: #fff;
+}
+
+.tile-container {
+  max-width: 1350px;
+  padding: 100px 0 0 0;
+  margin: auto;
+}
+
+.tile {
+  height: 500px;
+  border-radius: 25px;
+  display: inline-block;
+  margin-bottom: 75px;
+  float:left;
+  overflow: hidden;
+  font-weight: 500;
+  color: #d5d5d5;
+}
+
+.ifthen-tile {
+  width: 66%;
+  margin-right: 4%;
+  height: 500px;
+  border-radius: 25px;
+  background:
+          linear-gradient(to bottom, rgba(0, 0, 0, 0.85), rgba(11, 42, 103, 0.5)),
+          url("../img/abstract14.jpeg");
+  background-size: cover;
+}
+
+.centered-p {
+  font-size: 24px;
+  max-width: 550px;
+  margin: 110px auto 0 auto;
+  line-height: 30px;
+  text-align: center;
+  text-shadow: 2px 2px rgba(0, 0, 0, 0.22);
+}
+
+.subtext-p {
+  font-size: 15px;
+  font-weight: 500;
+  color: #fff;
+  max-width: 450px;
+  text-align: center;
+  margin:90px auto 0 auto;
+  text-shadow: 1px 0 5px #000;
+}
+
+.demo-command {
+  color: #fff;
+  font-size: 20px;
+  height: 44px;
+  background: rgba(0, 0, 0, 0.9);
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.8);
+  display: block;
+  width: 520px;
+  margin:50px auto;
+  border-radius: 8px;
+  font-family: discord, sans-serif;
+  padding: 7px;
+}
+
+.demo-command img {
+  height: 24px;
+  width: 24px;
+  border-radius: 100px;
+  margin: 3px 10px;
+  float: left;
+}
+
+.statement-cmd {
+  float: left;
+  padding: 2px 15px 0 10px;
+  font-size: 18px;
+}
+
+.demo-command p .statement-bg {
+  font-size: 16px;
+  background: #292b2f;
+  padding: 3px 10px 3px 0;
+  border-radius: 5px;
+  overflow: hidden;
+  display: inline-block;
+  border: 1px solid #3daee9;
+}
+
+.field-text {
+  padding: 3px 10px;
+  background: #18191c;
+  margin-right: 10px;
+  color: rgb(220, 221, 222);
+}
+
+.features-tile {
+  width: 30%;
+  background: linear-gradient(225deg, #1623A6 0%, #3343D4 29%, #175EAC 73%, #176682 100%);
+  /*background: linear-gradient( #020202, #39393b);*/
+}
+
+.performance-tile {
+  width: 40%;
+  margin-right: 4%;
+  height: 500px;
+  border-radius: 25px;
+  background:
+          linear-gradient(to bottom, rgba(0, 0, 0, 0.85), rgba(82, 15, 66, 0.23)),
+          url("../img/nvidia.jpg");
+  background-size: cover;
+}
+
+.racism-tile {
+  width: 56%;
+  height: 500px;
+  border-radius: 25px;
+  background:
+          linear-gradient(to bottom, rgba(0, 0, 0, 0.75), rgba(0,0,0, 0.26)),
+          url("../img/racism.webp");
+  background-size: cover;
+  position: relative;
+}
+
+.racism-tile .left-top-p {
+  font-size: 26px;
+  max-width: 450px;
+}
+
+.left-btm-p {
+  font-size: 15px;
+  color: #fff;
+  max-width: 380px;
+  padding: 40px;
+  position: absolute;
+  bottom: 0;
+}
+
+.block-title {
+  padding: 25px 0 0 40px;
+  color: #fff;
+  font-weight: 500;
+  font-size: 17px;
+}
+
+.block-title span {
+  display: inline-block;
+  height: 24px;
+  width: 24px;
+  vertical-align: -6px;
+  margin-right: 15px;
+  background-repeat: no-repeat;
+}
+
+.left-top-p {
+  color: #b6b6b6;
+  margin: 40px;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.tile span {
+  color: #fff;
+}
+
+.chat-tile-spacer {
+  margin-top: 35px;
+}
+
+.big-center-p {
+  text-align: center;
+  color: #fff;
+  font-size: 40px;
+  font-weight: 500;
+  padding: 10px;
+}
+
+.privacy-tile {
+  width: 56%;
+  margin-right: 4%;
+  height: 500px;
+  border-radius: 25px;
+  background:
+          linear-gradient(to bottom, rgba(0, 0, 0, 0.85), rgba(0,0,0, 0.16)),
+          url("../img/privacy.jpeg");
+  background-size: cover;
+  position: relative;
+}
+
+.chat-tile {
+  width: 40%;
+  height: 500px;
+  border-radius: 25px;
+  background:
+          linear-gradient(to bottom, rgba(0, 0, 0, 0.85), rgba(0,0,0, 0.46)),
+          url("../img/discord.png");
+  background-size: cover;
+  position: relative;
+}
+
+.ready-section {
+  margin: 80px 0 170px 0;
+}
+
+.ready-section h4 {
+  font-size: 80px;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.ready-section div {
+  margin: auto;
+  display: block;
+  width: 300px;
+}
+
+.footer-body {
+  width: 100%;
+  background-color: #000000;
+}
+
+footer {
+  padding: 70px 80px 20px 80px;
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  color: #ffffff;
+}
+
+.top-footer {
+  border-top: 1px solid rgba(0,0,0,.1);
+  margin: 30px auto 0 auto;
+}
+
+footer * div {
+  width: 140px;
+  font-weight: 500;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(61, 63, 55, 0.1);
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+footer div a {
+  padding: 5px 0;
+  display: block;
+  font-size: 15px;
+}
+
+footer p {
+  display: block;
+  color: rgba(213, 213, 213, 0.5);
+  padding-bottom: 20px;
+  margin:auto;
+}
+
+footer span {
+  font-weight: 500;
+}
+
+
+
+@media (max-width: 1350px) {
+
+  .big-center-p {
+    font-size: 35px;
+  }
+  .page-body {
+    padding: 0 40px;
+  }
+
+  .chat-message-uber {
+    left: 600px;
+  }
+
+}
+
+@media (max-width: 1200px) {
+
+}
+
+@media (max-width: 900px) {
+
+  .right-logo {
+    display: none;
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .nav-links {
+    display: none;
+  }
+
+  object {
+    height: 500px;
+    top: 180px;
+    left: -190px;
+  }
+  .above-fold {
+    height: 500px;
+  }
+
+  .uber-header {
+    margin: 0;
+  }
+
+  h1 {
+    font-size: 45px;
+    line-height: 50px
+  }
+
+  .uber-header p {
+    font-size: 20px;
+    line-height: 25px;
+  }
+
+}
+
+@media (max-width: 350px) {
+
+  .page-body {
+    padding: 0 20px;
+  }
+
+  .above-fold {
+    height: 500px;
+  }
+
+  h1 {
+    font-size: 32px;
+    line-height: 40px
+  }
+
+  .uber-header p {
+    font-size: 20px;
+    line-height: 25px;
+  }
+}

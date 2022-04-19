@@ -1,0 +1,2 @@
+mask-image: linear-gradient(to bottom, black 0% , black 85% ,transparent 98%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0% , black 85% ,transparent 98%, transparent 100%);
