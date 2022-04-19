@@ -119,7 +119,7 @@ nav a:hover {
   height: 45px;
   width: 45px;
   border-radius: 2000px;
-  background-image: url("../icon.png");
+  background-image: url("../img/pfp/comfyai.webp");
   background-size: 100%;
   display: inline-block;
   cursor: pointer;
@@ -338,7 +338,7 @@ b {
   border-radius: 25px;
   background:
           linear-gradient(to bottom, rgba(0, 0, 0, 0.85), rgba(11, 42, 103, 0.5)),
-          url("../img/abstract14.jpeg");
+          url("../img/abstract3_optim.webp");
   background-size: cover;
 }
 
@@ -419,7 +419,7 @@ b {
   border-radius: 25px;
   background:
           linear-gradient(to bottom, rgba(0, 0, 0, 0.85), rgba(82, 15, 66, 0.23)),
-          url("../img/nvidia.jpg");
+          url("../img/nvidia_optim_1.webp");
   background-size: cover;
 }
 
@@ -428,8 +428,8 @@ b {
   height: 500px;
   border-radius: 25px;
   background:
-          linear-gradient(to bottom, rgba(0, 0, 0, 0.75), rgba(0,0,0, 0.26)),
-          url("../img/racism.webp");
+          linear-gradient(to bottom, rgba(0, 0, 0, 0.95), rgba(0,0,0, 0.26)),
+          url("../img/racism_1.webp");
   background-size: cover;
   position: relative;
 }
@@ -494,7 +494,7 @@ b {
   border-radius: 25px;
   background:
           linear-gradient(to bottom, rgba(0, 0, 0, 0.85), rgba(0,0,0, 0.16)),
-          url("../img/privacy.jpeg");
+          url("../img/privacy_optim_1.webp");
   background-size: cover;
   position: relative;
 }
@@ -505,13 +505,13 @@ b {
   border-radius: 25px;
   background:
           linear-gradient(to bottom, rgba(0, 0, 0, 0.85), rgba(0,0,0, 0.46)),
-          url("../img/discord.png");
+          url("../img/discord.webp");
   background-size: cover;
   position: relative;
 }
 
 .ready-section {
-  margin: 80px 0 170px 0;
+  margin: 80px 0 180px 0;
 }
 
 .ready-section h4 {
