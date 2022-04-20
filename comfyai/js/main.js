@@ -72,7 +72,7 @@ window.onload=function() {
             insertChatDemos()
             clearInterval(start_anim_delay)
         }
-    }, 500)
+    }, 100)
 }
 
 let exitIdleAnimation = false;
