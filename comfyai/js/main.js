@@ -67,7 +67,7 @@ function debounce(func, wait, immediate) {
 window.onload=function() {
     get_chat_demo_data()
     setTimeout(function() {
-        animateSVG()
+        //animateSVG()
         insertChatDemos()
     }, 500)
 }
