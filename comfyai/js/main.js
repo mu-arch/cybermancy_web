@@ -2,7 +2,7 @@
 let path = "https://cybermancy.org/comfyai"
 
 //execute immediately at runtime
-let chat_data;
+let chat_data = false;
 let loopIterCountMut = 0;
 async function get_chat_demo_data() {
     let chat_data_promise = await fetch(path + "/js/chats.json");
@@ -66,9 +66,12 @@ function debounce(func, wait, immediate) {
 //start application code
 window.onload=function() {
     get_chat_demo_data()
-    setTimeout(function() {
-        //animateSVG()
-        insertChatDemos()
+    let start_anim_delay = setInterval(function() {
+        if (chat_data) {
+            //animateSVG()
+            insertChatDemos()
+            clearInterval(start_anim_delay)
+        }
     }, 500)
 }
 
