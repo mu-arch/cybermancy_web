@@ -182,6 +182,10 @@ header {
   color: #132552;
 }
 
+.menu-icon {
+  display:none;
+}
+
 
 .button-special {
   padding: 13px 35px 14px 30px !important;
@@ -602,6 +606,21 @@ footer span {
 
   .nav-links {
     display: none;
+  }
+
+  .ico-menu {
+    height: 24px;
+    width: 24px;
+  }
+
+  .menu-icon {
+    display: inline-block;
+    position: absolute;
+    top:40px;
+    right:40px;
+    padding: 10px;
+    background: linear-gradient(#fff, #f2f1f0);
+    border-radius: 5px;
   }
 
   object {
