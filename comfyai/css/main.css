@@ -611,16 +611,22 @@ footer span {
   .ico-menu {
     height: 24px;
     width: 24px;
+    display: inline-block;
+    vertical-align: -6px;
+    margin-left: 10px;
   }
 
   .menu-icon {
     display: inline-block;
     position: absolute;
-    top:40px;
-    right:40px;
-    padding: 10px;
+    top:43px;
+    right:20px;
+    padding: 7px 14px 7px 16px;
     background: linear-gradient(#fff, #f2f1f0);
     border-radius: 5px;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 14px;
   }
 
   object {
