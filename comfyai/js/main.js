@@ -9,7 +9,7 @@ async function get_chat_demo_data() {
     chat_data = await chat_data_promise.json()
     chat_data = shuffle(chat_data)
 }
-
+setButtonTextBasedOnSize()
 
 
 //start function spam
@@ -78,12 +78,29 @@ window.onload=function() {
 let exitIdleAnimation = false;
 var resetAnimationsDebounced = debounce(function() {
     console.info("Cleaning up demo and restarting.")
+
+    setButtonTextBasedOnSize()
     document.getElementById("chats").innerHTML = "";
     chat_data = shuffle(chat_data)
     insertChatDemos()
 }, 150)
 
 window.addEventListener('resize', resetAnimationsDebounced);
+
+function setButtonTextBasedOnSize() {
+
+    let buttons = document.getElementsByClassName("button-special");
+    let text;
+    if (window.innerWidth > 500) {
+        text = "<span class=\"ico-discord\"></span>Get Started: Invite Bot";
+    } else {
+        text = "<span class=\"ico-discord\"></span>Invite Bot";
+    }
+    console.log(window.innerWidth)
+    buttons[0].innerHTML = text
+    buttons[1].innerHTML = text
+}
+
 
 function animateSVG() {
     let element = document.getElementById("bg").contentDocument.getElementsByTagName("svg")[0];
@@ -105,10 +122,10 @@ function animateSVG() {
 function insertChatDemos() {
     exitIdleAnimation = true;
     let chats_container = document.getElementById("chats")
-    if (getBrowserWidth() < 900) {
+    if (window.innerWidth < 900) {
         return
     }
-    let browserWidth = getBrowserWidth() - 630;
+    let browserWidth = window.innerWidth - 630;
     let handledWidthMut = browserWidth;
     loopIterCountMut = 0;
 

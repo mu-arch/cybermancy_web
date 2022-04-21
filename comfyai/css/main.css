@@ -165,7 +165,7 @@ object {
 
 header {
   height: 380px;
-  margin:50px auto 80px auto;
+  margin:40px auto 80px auto;
 }
 
 .uber-header {
@@ -184,7 +184,7 @@ header {
 
 
 .button-special {
-  padding: 13px 30px 14px 30px !important;
+  padding: 13px 40px 14px 30px !important;
   background: #8a9de0 linear-gradient(180deg, #5066b6, #362ea2);
   color: #fff!important;
   text-transform: uppercase;
@@ -636,7 +636,7 @@ footer span {
   }
 
   .above-fold {
-    height: 500px;
+    height: 520px;
   }
 
   h1 {
@@ -645,7 +645,7 @@ footer span {
   }
 
   .uber-header p {
-    font-size: 20px;
-    line-height: 25px;
+    font-size: 18px;
+    line-height: 23px;
   }
 }
