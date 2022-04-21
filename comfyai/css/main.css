@@ -198,10 +198,13 @@ header {
   display: inline-block;
   border: 1px solid #5463a1;
   cursor: pointer;
+  transition: all 60ms;
+  transition-timing-function: ease-out;
 }
 
 .button-special:hover {
-  background: #8a9de0 linear-gradient(180deg, #362ea2, #5066b6);
+  transform: scale(1.05);
+
 }
 
 .button-special span {
@@ -322,7 +325,7 @@ b {
 
 .tile {
   height: 500px;
-  border-radius: 25px;
+  border-radius: 15px;
   display: inline-block;
   margin-bottom: 75px;
   float:left;
@@ -335,7 +338,6 @@ b {
   width: 66%;
   margin-right: 4%;
   height: 500px;
-  border-radius: 25px;
   background:
           linear-gradient(to bottom, rgba(0, 0, 0, 0.85), rgba(11, 42, 103, 0.5)),
           url("../img/abstract3_optim.webp");
@@ -416,7 +418,6 @@ b {
   width: 40%;
   margin-right: 4%;
   height: 500px;
-  border-radius: 25px;
   background:
           linear-gradient(to bottom, rgba(0, 0, 0, 0.85), rgba(82, 15, 66, 0.23)),
           url("../img/nvidia_optim_1.webp");
@@ -426,7 +427,6 @@ b {
 .racism-tile {
   width: 56%;
   height: 500px;
-  border-radius: 25px;
   background:
           linear-gradient(to bottom, rgba(0, 0, 0, 0.95), rgba(0,0,0, 0.26)),
           url("../img/racism_1.webp");
@@ -491,7 +491,6 @@ b {
   width: 56%;
   margin-right: 4%;
   height: 500px;
-  border-radius: 25px;
   background:
           linear-gradient(to bottom, rgba(0, 0, 0, 0.85), rgba(0,0,0, 0.16)),
           url("../img/privacy_optim_1.webp");
@@ -502,7 +501,6 @@ b {
 .chat-tile {
   width: 40%;
   height: 500px;
-  border-radius: 25px;
   background:
           linear-gradient(to bottom, rgba(0, 0, 0, 0.85), rgba(0,0,0, 0.46)),
           url("../img/discord.webp");
