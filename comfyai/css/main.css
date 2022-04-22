@@ -59,9 +59,18 @@ nav {
 }
 
 nav .right-logo {
+  cursor: pointer;
   float:right;
-  padding: 12px 0;
+  position: relative;
+  left: 20px;
+  padding: 12px 20px;
   color: #3f3f3f;
+  border-radius: 5px;
+}
+
+.right-logo:hover {
+  background: rgba(0,0,0,.07);
+  color: #000;
 }
 
 .new {
@@ -94,7 +103,7 @@ nav .right-logo {
   color: #000;
 }
 
-nav a {
+.nav-links a {
   text-transform: uppercase;
   font-weight: 500;
   letter-spacing: .5px;
@@ -108,7 +117,7 @@ nav a {
   border: 1px solid transparent;
 }
 
-nav a:hover {
+.nav-links a:hover {
   border: 1px solid #c5c4c3;
   background: linear-gradient(#fbf9f8, #f5f2f1);
   box-shadow: 0 2px 3px rgba(193, 193, 193, 0.35);
@@ -124,6 +133,52 @@ nav a:hover {
   display: inline-block;
   cursor: pointer;
 
+}
+
+.menu-icon {
+  display:none;
+  position: absolute;
+  top:43px;
+  right:20px;
+  padding: 7px 14px 7px 16px;
+  background: linear-gradient(#fff, #f2f1f0);
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 14px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+}
+
+.mobile-menu-area {
+  display: none;
+  position: absolute;
+  top: 43px;
+  right: 20px;
+  background: #fff;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.35);
+  padding: 7px 14px 7px 16px;
+  background: linear-gradient(#fff, #ece9e7);
+  border-radius: 3px;
+
+}
+
+.mobile-menu-links {
+  display: block;
+  float:left;
+  border-right: 1px solid rgba(0,0,0,.2);
+  padding: 0 20px 0 0;
+  margin: 5px 3px 5px 0;
+}
+
+.mobile-menu-links a {
+  display: block;
+  color: #000;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 13px;
+  padding: 7px 0;
 }
 
 
@@ -181,11 +236,6 @@ header {
   line-height: 40px;
   color: #132552;
 }
-
-.menu-icon {
-  display:none;
-}
-
 
 .button-special {
   padding: 13px 35px 14px 30px !important;
@@ -617,16 +667,10 @@ footer span {
 
   .menu-icon {
     display: inline-block;
-    position: absolute;
-    top:43px;
-    right:20px;
-    padding: 7px 14px 7px 16px;
-    background: linear-gradient(#fff, #f2f1f0);
-    border-radius: 3px;
-    text-transform: uppercase;
-    font-weight: 500;
-    font-size: 14px;
-    box-shadow: 0 2px 3px rgba(193, 193, 193, 0.35);
+  }
+
+  .mobile-menu-area {
+    display: block;
   }
 
   object {
