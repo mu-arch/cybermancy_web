@@ -677,7 +677,9 @@ footer span {
     margin-left: 10px;
   }
 
-
+  .menu-icon {
+    display: inline-block;
+  }
 
   object {
     height: 500px;
@@ -704,7 +706,7 @@ footer span {
 
 }
 
-@media (max-width: 350px) {
+@media (max-width: 470px) {
 
   .page-body {
     padding: 0 20px;
