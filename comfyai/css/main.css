@@ -138,19 +138,22 @@ nav .right-logo {
 .menu-icon {
   display:none;
   position: absolute;
+  letter-spacing: 1px;
+  font-size: 12px;
   top:43px;
   right:20px;
-  padding: 7px 14px 7px 16px;
+  padding: 7px 14px 7px 18px;
   background: linear-gradient(#fff, #f2f1f0);
   border-radius: 3px;
   text-transform: uppercase;
   font-weight: 500;
-  font-size: 14px;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.35);
   cursor: pointer;
+  user-select: none;
 }
 
 .mobile-menu-area {
+  user-select: none;
   display: none;
   position: absolute;
   top: 33px;
@@ -160,6 +163,11 @@ nav .right-logo {
   padding: 7px 14px 7px 16px;
   background: linear-gradient(#fff, #ece9e7);
   border-radius: 3px;
+}
+
+.ico-menu {
+  cursor: pointer;
+  user-select: auto;
 }
 
 .mobile-menu-area .ico-menu {
@@ -175,6 +183,7 @@ nav .right-logo {
 }
 
 .mobile-menu-links a {
+  user-select: auto;
   display: block;
   color: #000;
   text-decoration: none;
@@ -664,17 +673,11 @@ footer span {
     height: 24px;
     width: 24px;
     display: inline-block;
-    vertical-align: -6.5px;
+    vertical-align: -7px;
     margin-left: 10px;
   }
 
-  .menu-icon {
-    display: inline-block;
-  }
 
-  .mobile-menu-area {
-    display: block;
-  }
 
   object {
     height: 500px;

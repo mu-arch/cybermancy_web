@@ -75,6 +75,22 @@ window.onload=function() {
     }, 100)
 }
 
+
+let menu_toggled_open = false;
+function toggleMobileMenuDisplay() {
+
+    if (menu_toggled_open) {
+        document.getElementById("menu-toggle").style.display = 'inline-block';
+        document.getElementById("mobile-menu").style.display = 'none';
+        menu_toggled_open = false
+    } else {
+        document.getElementById("menu-toggle").style.display = 'none';
+        document.getElementById("mobile-menu").style.display = 'inline-block';
+        menu_toggled_open = true
+    }
+
+}
+
 let exitIdleAnimation = false;
 var resetAnimationsDebounced = debounce(function() {
     console.info("Cleaning up demo and restarting.")
