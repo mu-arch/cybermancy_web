@@ -652,13 +652,55 @@ footer span {
 }
 
 @media (max-width: 1100px) {
+
+
+  .ifthen-tile {
+    width: 68%;
+    margin-right: 2%;
+  }
+
   .block-title {
-    font-size: 14px;
+    font-size: 12px;
+    padding: 25px 0 0 30px;
+  }
+
+  .block-title span {
+    vertical-align: -5px;
+    height: 20px;
+    width: 20px;
+  }
+
+  .centered-p {
+    font-size:  18px;
+    padding: 0 30px;
+    margin-top: 70px;
+    line-height: 25px;
   }
 
   .big-center-p {
-    font-size: 28px;
+    font-size: 26px;
   }
+
+  .demo-command {
+    transform: scale(.8);
+    margin: 40px auto 70px auto;
+  }
+
+  .subtext-p {
+    font-size: 12px;
+    margin-top: 40px;
+  }
+
+  .left-top-p {
+    font-size: 18px!important;
+    margin: 30px 30px 10px 30px;
+  }
+
+  .tile {
+    height: 420px!important;
+  }
+
+
 
 }
 
