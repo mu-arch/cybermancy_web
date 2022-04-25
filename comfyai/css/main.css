@@ -514,7 +514,7 @@ b {
 }
 
 .block-title {
-  padding: 25px 0 0 40px;
+  padding: 35px 0 0 40px;
   color: #fff;
   font-weight: 500;
   font-size: 17px;
@@ -557,8 +557,7 @@ b {
   margin-right: 4%;
   height: 500px;
   background:
-          linear-gradient(to bottom, rgba(0, 0, 0, 0.85), rgba(0,0,0, 0.16)),
-          url("../img/privacy_optim_1.webp");
+          rgba(0,0,0,.6);
   background-size: cover;
   position: relative;
 }
@@ -694,6 +693,16 @@ footer span {
   .left-top-p {
     font-size: 18px!important;
     margin: 30px 30px 10px 30px;
+  }
+
+  .performance-tile {
+    width: 42%;
+    margin-right: 2%;
+  }
+
+  .privacy-tile {
+    width: 58%;
+    margin-right: 2%;
   }
 
   .tile {
