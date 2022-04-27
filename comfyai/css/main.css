@@ -517,14 +517,14 @@ b {
   padding: 35px 30px 25px 40px;
   color: #fff;
   font-weight: 500;
-  line-height: 23px;
   width: 100%;
 }
 
 .block-title h3 {
   font-size: 17px;
   display: inline-block;
-  margin-top: 3px;
+  margin-top: 4px;
+  line-height: 20px;
 }
 
 .block-title span {
@@ -677,7 +677,7 @@ footer span {
 
   .block-title h3 {
     font-size: 12px;
-    margin-top: 1px;
+    margin-top: 3px;
   }
 
   .block-title span {
