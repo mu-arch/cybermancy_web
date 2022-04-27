@@ -719,6 +719,12 @@ footer span {
     display: none;
   }
 
+  .tile {
+    width: 100%!important;
+    margin-right: 0!important;
+    margin-bottom: 30px;
+  }
+
 }
 
 @media (max-width: 600px) {
