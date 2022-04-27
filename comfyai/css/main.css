@@ -514,12 +514,13 @@ b {
 }
 
 .block-title {
-  padding: 35px 30px 35px 40px;
+  padding: 35px 30px 30px 40px;
   color: #fff;
   font-weight: 500;
-  line-height: 25px;
+  line-height: 23px;
   font-size: 17px;
   float:left;
+  width: 100%;
 }
 
 .block-title span {
@@ -667,7 +668,7 @@ footer span {
 
   .block-title {
     font-size: 12px;
-    padding: 25px 30px 20px 30px;
+    padding-right: 30px;
   }
 
   .block-title span {
@@ -679,7 +680,7 @@ footer span {
   .centered-p {
     font-size:  18px;
     padding: 0 30px;
-    margin-top: 70px;
+    margin-top: 40px;
     line-height: 25px;
   }
 
@@ -780,7 +781,7 @@ footer span {
   }
 
   .block-title {
-    font-size: 15px;
+    font-size: 14px;
   }
 
   .block-title span {
