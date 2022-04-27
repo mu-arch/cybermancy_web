@@ -514,18 +514,20 @@ b {
 }
 
 .block-title {
-  padding: 35px 0 0 40px;
+  padding: 35px 30px 35px 40px;
   color: #fff;
   font-weight: 500;
+  line-height: 25px;
   font-size: 17px;
+  float:left;
 }
 
 .block-title span {
   display: inline-block;
   height: 24px;
   width: 24px;
-  vertical-align: -6px;
-  margin-right: 15px;
+
+  margin: 2px 20px 0 0;
   background-repeat: no-repeat;
 }
 
@@ -550,6 +552,11 @@ b {
   font-size: 40px;
   font-weight: 500;
   padding: 10px;
+  display: block;
+}
+
+.big-center-p:first-child {
+  margin-top: 20px;
 }
 
 .privacy-tile {
@@ -660,7 +667,7 @@ footer span {
 
   .block-title {
     font-size: 12px;
-    padding: 25px 0 0 30px;
+    padding: 25px 30px 20px 30px;
   }
 
   .block-title span {
@@ -692,7 +699,7 @@ footer span {
 
   .left-top-p {
     font-size: 18px!important;
-    margin: 30px 30px 10px 30px;
+    margin: 0 30px 30px 30px;
   }
 
   .performance-tile {
@@ -723,6 +730,10 @@ footer span {
     width: 100%!important;
     margin-right: 0!important;
     margin-bottom: 30px;
+  }
+
+  .tile-container {
+    padding-top: 50px;
   }
 
 }
@@ -766,6 +777,32 @@ footer span {
   .uber-header p {
     font-size: 20px;
     line-height: 25px;
+  }
+
+  .block-title {
+    font-size: 15px;
+  }
+
+  .block-title span {
+    float: left;
+    height: 40px;
+  }
+
+  .ifthen-tile {
+    height: 380px!important;
+  }
+
+  .demo-command {
+    display: none;
+  }
+
+  .subtext-p {
+    padding: 0 40px;
+    display: none;
+  }
+
+  .left-top-p {
+    font-size: 16px!important;
   }
 
 }
