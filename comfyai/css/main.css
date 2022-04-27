@@ -514,7 +514,7 @@ b {
 }
 
 .block-title {
-  padding: 35px 30px 25px 40px;
+  padding: 25px 30px 25px 40px;
   color: #fff;
   font-weight: 500;
   width: 100%;
@@ -688,7 +688,7 @@ footer span {
   .centered-p {
     font-size:  18px;
     padding: 0 30px;
-    margin-top: 40px;
+    margin-top: 30px;
     line-height: 25px;
   }
 
