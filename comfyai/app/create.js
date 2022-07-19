@@ -3,6 +3,7 @@ function e(e) {
 }
 
 let automation_object = {
+    name: "",
     event: null,
     actions: []
 }
@@ -51,6 +52,15 @@ function setSubPageContent(page_object) {
     e("right-sidebar").innerHTML = sidebar_html;
 }
 
+function update_name(value) {
+    if (!value) {
+        value = "Create"
+    }
+
+    automation_object.name = value
+    e("automation-name").innerText = automation_object.name;
+}
+
 function setMainPageState(obj_key, element) {
     console.log(obj_key, element);
     automation_object.event = {
@@ -64,14 +74,21 @@ function setMainPageState(obj_key, element) {
 function cleanupSubPageContent() {
     e("primary-page-content").style.display = 'inline-block';
     e("sub-page-content").style.display = 'none';
+    e("right-sidebar").innerHTML = '';
+    wakeupMainPageState()
 }
 
 function wakeupMainPageState() {
-
     if (automation_object.event == null) {
-        e("pre-config").style.display = "inline-block";
+        e("pre-config").style.display = "block";
+        e("right-sidebar").innerHTML = "<h3>New here?</h3><p>Be sure to check out the getting started guide!</p>";
     } else {
         e("pre-config").style.display = "none";
     }
 
 }
+
+//run instantly
+
+update_name(automation_object.name);
+wakeupMainPageState();
