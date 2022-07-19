@@ -3,7 +3,7 @@ const events_selection = {
     title: '1. Event Selection',
     desc: 'Choose the event below that you want to watch for. You can fine-tune exact properties on the next screen.',
     sidebar_header: "Quick Help: Events",
-    sidebar_text: "In case you're struggling with the concept of events (that's okay, you'll get it!) let's go over an example:\nImagine you are opening your fridge. When the door opens the light comes on. Cause and effect. The cause (event) is the door opening and the effect is the light coming on. Now imagine you could bind any effect you wanted to your fridge's door opening, like playing a sound effect, or showing a notification on your phone. This is what ComfyAI does, except for Discord!\nLet's think about this in terms of Discord now. Instead of just the fridge's door opening we have a number of different possible events. When a message is sent in your server that is an event. Emoji reactions, people joining and leaving your server, etc, are all events.\nComfyAI allows you to bind custom actions tied to these different events! You could log messages to another channel when they are edited or deleted, give users a role when they react to specific messages, report users to moderators when the AI recognizes their language as offensive, or even blink your Phillips Hue lights when someone joins your server!",
+    sidebar_text: "In case you're struggling with the concept of events (that's okay, you'll get it!) let's go over an example:\nImagine you are opening your fridge. When the door opens the light comes on. Cause and effect. Now imagine you could bind any effect you wanted to your fridge's door opening, like playing a sound effect, or showing a notification on your phone. This is what ComfyAI does, except for Discord!\nLet's think about this in terms of Discord now. Instead of just the fridge's door opening we have a number of different possible events. When a message is sent in your server that is an event. Emoji reactions, people joining and leaving your server, etc, are all events.\nComfyAI allows you to bind custom actions tied to these different events! You could log messages to another channel when they are edited or deleted, give users a role when they react to specific messages, report users to moderators when the AI recognizes their language as offensive, or even blink your Phillips Hue lights when someone joins your server!",
     types: [
         {
             name: 'reaction',
@@ -93,7 +93,7 @@ const events_selection = {
         {
             name: 'social contract',
             disabled: true,
-            desc: 'Scans all incoming messages, usernames, and other factors in your server for hate speech & rude or aggressive behavior. Triggers when a configurable threshold is exceeded',
+            desc: 'Scans all incoming messages, usernames, and other factors in your server for hate speech & rude or aggressive behavior. Triggers when a configurable threshold is exceeded.',
             extended_desc: "⚠️ Not yet available. Due to the extreme cost of AI capable GPUs this feature is only for paid users. Never fully rely on AI to moderate your community. It's a good first line of defense but we suggest you use it only to flag things for review."
         },
         {

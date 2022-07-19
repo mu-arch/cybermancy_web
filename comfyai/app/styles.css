@@ -250,6 +250,7 @@ section h2 {
   font-weight: 500;
   padding-top: 31px;
   opacity: .2;
+  user-select: none;
 }
 
 .pre-select img {
@@ -337,12 +338,29 @@ section h2 {
   border-left: 1px solid #333;
   height: 100%;
   padding: 0 0 0 60px;
+  position: relative;
 }
 
 .right-sidebar h3 {
-  padding-top: 55px;
-  padding-bottom: 30px;
+  margin-top: 55px;
+  margin-bottom: 30px;
   font-size: 30px;
+}
+
+.speech-bubble {
+  color: #000;
+  margin-top: 40px!important;
+  background-color: #fff;
+  border-radius: 200px;
+  padding: 10px 20px;
+  display: inline-block;
+}
+
+.right-sidebar img {
+  width: 120px;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 
 .right-sidebar p {
@@ -382,6 +400,11 @@ section h2 {
   background-position: 16px 9px;
   font-family: "import", sans-serif;
   transition: 500ms;
+}
+
+.input:focus {
+  outline: none;
+  border-color: rgb(0, 119, 255);
 }
 
 .spacer {

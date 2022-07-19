@@ -36,7 +36,7 @@ function setSubPageContent(page_object) {
 
     let sidebar_html = '';
 
-    sidebar_html += `<h3>${page_object.sidebar_header}</h3>`
+    sidebar_html += `<h3 class="speech-bubble">${page_object.sidebar_header}</h3><img src="../img/helper.png">`
 
     let lines = page_object.sidebar_text.split("\n")
 
@@ -59,6 +59,7 @@ function update_name(value) {
 
     automation_object.name = value
     e("automation-name").innerText = automation_object.name;
+    e("automation-name").setAttribute("title", automation_object.name);
 }
 
 function setMainPageState(obj_key, element) {
