@@ -36,7 +36,7 @@ function setSubPageContent(page_object) {
 
     let sidebar_html = '';
 
-    sidebar_html += `<h3 class="speech-bubble">${page_object.sidebar_header}</h3><img src="../img/helper.png">`
+    sidebar_html += `<h3 class="speech-bubble floating">${page_object.sidebar_header}</h3><img class="floating2" src="../img/helper2.png">`
 
     let lines = page_object.sidebar_text.split("\n")
 
@@ -54,7 +54,7 @@ function setSubPageContent(page_object) {
 
 function update_name(value) {
     if (!value) {
-        value = "Create"
+        value = "New"
     }
 
     automation_object.name = value

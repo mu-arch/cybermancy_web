@@ -40,7 +40,6 @@ html {
   margin-bottom: 45px;
   border-bottom: 1px solid #333;
   position: relative;
-  top: 3px;
   background: linear-gradient(320deg, transparent, #0c3162);
 }
 
@@ -160,6 +159,8 @@ html {
   max-width: 700px;
   padding: 40px 60px;
   margin-left: 320px;
+  border-right: 1px solid #333;
+  min-height: 100vh;
 }
 
 h1 {
@@ -225,13 +226,14 @@ section h2 {
 .section-p {
   font-size: 14px;
   line-height: 23px;
+  transition: 250ms;
 }
 
 .pre-config {
   cursor: pointer;
   background-color: #282828;
   height: 120px;
-  border-radius: 10px;
+  border-radius: 12px;
   margin: 40px 0 50px 0;
 }
 
@@ -269,7 +271,7 @@ section h2 {
 .selection-button {
   padding: 18px 35px;
   position: relative;
-  border-radius: 7px;
+  border-radius: 12px;
   background-color: rgba(255,255,255,.08);
   overflow:hidden;
   cursor: pointer;
@@ -335,8 +337,6 @@ section h2 {
 .right-sidebar {
   display: inline-block;
   max-width: 450px;
-  border-left: 1px solid #333;
-  height: 100%;
   padding: 0 0 0 60px;
   position: relative;
 }
@@ -357,10 +357,9 @@ section h2 {
 }
 
 .right-sidebar img {
-  width: 120px;
+  width: 140px;
   position: absolute;
-  right: 0;
-  top: 0;
+  right: -25px;
 }
 
 .right-sidebar p {
@@ -409,4 +408,31 @@ section h2 {
 
 .spacer {
   height: 50px;
+}
+
+.floating {
+  animation-name: floating;
+  animation-duration: 8s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+.floating2 {
+  animation-delay: -2s;
+  animation-name: floating2;
+  animation-duration: 8s;
+  animation-iteration-count: infinite;
+  animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+}
+
+@keyframes floating {
+  0% { transform: translate(0,  0px) rotate(1deg); }
+  50%  { transform: translate(0, 8px) rotate(-1deg); }
+  100%   { transform: translate(0, -0px) rotate(1deg); }
+}
+
+@keyframes floating2 {
+  0% { transform: translate(0,  0px) rotate(-1deg); }
+  50%  { transform: translate(0, 10px) rotate(1deg); }
+  100%   { transform: translate(0, -0px) rotate(-1deg); }
 }
