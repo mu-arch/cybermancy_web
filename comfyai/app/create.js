@@ -2,20 +2,19 @@ function e(e) {
     return document.getElementById(e);
 }
 
+function uuidv4() {
+    return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+    );
+}
+
 let automation_object = {
+    uuid: null,
     name: "",
+    draft: false,
     event: null,
     actions: []
 }
-
-/*
-let text_value_struct = {
-    match_case: bool,
-    allow_inside_word_matches: bool,
-    string: String
-}
-
- */
 
 
 
@@ -27,7 +26,7 @@ function setSubPageContent(page_object) {
     html += `<p class="header">${page_object.desc}</p>`;
 
     page_object.types.forEach((item) => {
-        html += `<div class="selection-block ${item.disabled ? 'disabled' : ''}" onclick="setMainPageState('${page_object.type}', '${item.name}')"><div class="selection-button"><h3>${item.name}</h3><p>${item.desc}</p><img src="../img/icons/keyboard_arrow_right.svg"></div>`
+        html += `<div class="selection-block ${item.disabled ? 'disabled' : ''}" onclick="returnFromSubPage('${page_object.type}', '${item.name}')"><div class="selection-button"><h3>${item.name}</h3><p>${item.desc}</p><img src="../img/icons/keyboard_arrow_right.svg"></div>`
         if (item.extended_desc) {
             html += `<p class="extended-desc">${item.extended_desc}</p>`
         }
@@ -54,7 +53,7 @@ function setSubPageContent(page_object) {
 
 function update_name(value) {
     if (!value) {
-        value = "New"
+        value = "New Automation"
     }
 
     automation_object.name = value
@@ -62,11 +61,14 @@ function update_name(value) {
     e("automation-name").setAttribute("title", automation_object.name);
 }
 
-function setMainPageState(obj_key, element) {
+function returnFromSubPage(obj_key, element) {
     console.log(obj_key, element);
-    automation_object.event = {
-        type: element,
-        data: null
+
+    if (obj_key == "event") {
+        automation_object.event = {
+            type: element,
+            data: null
+        }
     }
     cleanupSubPageContent();
     wakeupMainPageState()
@@ -80,16 +82,48 @@ function cleanupSubPageContent() {
 }
 
 function wakeupMainPageState() {
-    if (automation_object.event == null) {
-        e("pre-config").style.display = "block";
-        e("right-sidebar").innerHTML = "<h3>New here?</h3><p>Be sure to check out the getting started guide!</p>";
+
+    if (automation_object.name == "") {
+
     } else {
-        e("pre-config").style.display = "none";
+        let event_html = `<div class="portion"><h2>2. Event</h2><p class="section-p">The event defines what ComfyAI should notice. When something happens in your Discord server that matches your event, and its optional properties, this automation is triggered.</p><div id="event-block"></div></div>`
+    }
+
+    if (automation_object.event == null) {
+        e("right-sidebar").innerHTML = "<h3>New here?</h3><p>Be sure to check out the getting started guide!</p>";
+        e("event-block").innerHTML = `<div class="pre-config" onclick="setSubPageContent(events_selection)"><div class="pre-select"><img src="../img/icons/plus.svg">Event</div></div>`;
+    } else {
+        e("event-block").innerHTML = `<div class="event-card"></div>`;
     }
 
 }
 
+function firstLoadCheck() {
+
+    /*
+    if (params.uuid) {
+        loadCommandFromStore(params.uuid)
+    } else {
+        let new_uuid = uuidv4();
+        const params = new URLSearchParams(location.search);
+
+        params.set('uuid', new_uuid);
+
+        params.toString();
+        window.history.replaceState({}, '', `${location.pathname}?${params.toString()}`);
+    }
+
+     */
+
+}
+
+
+
 //run instantly
 
+const params = new Proxy(new URLSearchParams(window.location.search), {
+    get: (searchParams, prop) => searchParams.get(prop),
+});
 update_name(automation_object.name);
 wakeupMainPageState();
+firstLoadCheck();

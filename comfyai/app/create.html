@@ -29,28 +29,13 @@
 <div class="main-content">
     <section id="primary-page-content">
         <h1 id="automation-name" class="main-h1"></h1>
-        <div id="hidden-flair">Automation</div>
         <img class="page-guild-icon"
              src="https://cdn.discordapp.com/icons/820120530107367435/a_1e475865027f4a3d0b584783a9919e43.webp?size=4096">
-        <h2>1. Name your automation</h2>
-        <p class="section-p">Give a short name to help you recognize this automation and it's purpose in the automation
+        <div></div>
+        <h2>Name your automation</h2>
+        <p class="section-p">Give a short name to help you recognize this automation, and it's purpose in the automation
             list.</p>
         <input class="input" id="name-input" oninput="update_name(this.value);" placeholder="Automation name">
-        <div class="spacer"></div>
-        <div class="portion">
-            <h2>2. Event</h2>
-            <p class="section-p">The event defines what ComfyAI should notice. When something happens in your Discord
-                server
-                that matches your event, and its optional properties, this automation is triggered. Click below to
-                begin.</p>
-            <div id="event-block">
-                <div id="pre-config" class="pre-config" onclick="setSubPageContent(events_selection)">
-                    <div class="pre-select">
-                        <img src="../img/icons/plus.svg">Event
-                    </div>
-                </div>
-            </div>
-        </div>
     </section>
     <section id="sub-page-content"></section>
 </div>
