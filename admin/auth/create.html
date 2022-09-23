@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="utf-8" http-equiv="encoding">
+<head>
+    <meta charset="UTF-8">
+    <title>Signup - PostAgent</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+<div class="formHolder">
+    <div class="accountForm">
+        <a href="http://localhost:63342/postagent/index.html">
+            <div class="logo"></div>
+        </a>
+        <h1>Join us,</h1>
+        <p class="desc">Already signed up? <a class="link" href="login.html">Login</a></p>
+        <form onsubmit="return false;">
+            <input id="email" autocomplete="off" type="text" name="email" placeholder="Email" autofocus>
+            <input id="password" autocomplete="off" type="password" name="password" placeholder="Password" autofocus>
+            <input id="password2" autocomplete="off" type="password" name="password" placeholder="Repeat Password" autofocus>
+            <div id="signup-submit" class="submit">Sign up</div>
+        </form>
+        <div id="notification"></div>
+        <div class="hr"></div>
+        <p class="forgot-email">Your email is not shared, and we don't send marketing.</p>
+    </div>
+</div>
+</body>
+</html>
+
+<script>
+    "use strict";
+    const host = "http://localhost:3030";
+
+    function e(e) {
+        return document.getElementById(e);
+    }
+
+    function isEmail(email){
+
+        return /^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*$/.test( email );
+    }
+
+    function signupPost(email, password) {
+        e('notification').style.color = 'gray';
+        e('notification').innerHTML = 'Please wait...';
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", host + '/account/create', true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.timeout = 5000;
+        xhr.send(JSON.stringify({
+            email: email,
+            password
+        }));
+        xhr.onload = () => {
+            if (xhr.status === 200) {
+                let resp = JSON.parse(xhr.response)
+                e("signup-submit").outerHTML = "";
+                e('notification').style.color = '#07fc40';
+                e('notification').innerHTML = "Ok account created. Logging in...";
+                loginPost(email, password)
+            } else if (xhr.status === 409) {
+                e('notification').style.color = 'orangered';
+                e('notification').innerHTML = "An account already exists with the given email.";
+            } else {
+                e('notification').style.color = 'orangered';
+                console.log('Status: ' + xhr.status + ', Response: ' + xhr.response);
+                e('notification').innerHTML = JSON.parse(xhr.response)["note"];
+            }
+
+        };
+        xhr.ontimeout = () => {
+            e('notification').style.color = 'red';
+            e('notification').innerHTML = 'The request timed out.';
+        };
+        xhr.onerror = () => {
+            e('notification').style.color = 'red';
+            e('notification').innerHTML = "Something went wrong... maybe our server went down? Check the browser console for more information.";
+        }
+    }
+
+    function loginPost(email, password) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", host + '/account/login', true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.timeout = 5000;
+        xhr.send(JSON.stringify({
+            email: email,
+            password
+        }));
+        xhr.onload = () => {
+            if (xhr.status === 200) {
+                let resp = JSON.parse(xhr.response)
+                localStorage.setItem('email', e('email').value);
+                localStorage.setItem('session', resp['session']);
+                localStorage.setItem('account_id', resp['account_id']);
+                localStorage.setItem('session_created_at', resp['session_created_at']);
+                window.location.href = "../overview.html";
+            } else if (xhr.status === 401) {
+                e('notification').style.color = 'orangered';
+                e('notification').innerHTML = "That email or password is not linked to a valid account.";
+            } else {
+                e('notification').style.color = 'orangered';
+                console.log('Status: ' + xhr.status + ', Response: ' + xhr.response);
+                e('notification').innerHTML = JSON.parse(xhr.response)["msg"];
+            }
+
+        };
+        xhr.ontimeout = () => {
+            e('notification').style.color = 'red';
+            e('notification').innerHTML = 'The request timed out.';
+        };
+        xhr.onerror = () => {
+            e('notification').style.color = 'red';
+            e('notification').innerHTML = "Something went wrong... maybe our server went down? Check the browser console for more information.";
+        }
+    }
+
+
+    e('signup-submit').onclick = () => {
+        activateForm()
+    };
+
+    let last_execution = 0;
+
+    function activateForm() {
+        //poor man's rate limiter
+        let current_time = Date.now();
+        if (current_time - last_execution < 1000)
+            return;
+
+        last_execution = current_time;
+
+        if(isEmail(e('email').value) === false) {
+            e('notification').style.color = 'orangered';
+            e('notification').innerHTML = 'Invalid email.';
+            return
+        }
+
+        if (e('password').value !== e('password2').value) {
+            e('notification').style.color = 'orangered';
+            e('notification').innerHTML = 'Passwords don\'t match.';
+            return
+        }
+
+        e('notification').innerHTML = '';
+        if (e('email').value !== '' && e('password').value !== '') {
+            signupPost(e('email').value, e('password').value);
+        }
+    }
+
+</script>
