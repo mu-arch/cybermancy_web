@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Automation</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="sidebar">
+    <div class="logo-section">
+        <div id="logo"></div>
+        <span>Comfy AI</span></div>
+    <div class="guild-selection">
+        <div class="side-icon"><img
+                src="https://cdn.discordapp.com/icons/820120530107367435/a_1e475865027f4a3d0b584783a9919e43.webp?size=4096">
+        </div>
+        <div class="guild-text">Comfy Community</div>
+        <img class="dropdown-arrow" src="../img/icons/arrow_drop_down.svg"></img></div>
+
+    <a class="active">Automations<img src="../img/icons/keyboard_arrow_right.svg"></a>
+    <a>Guild Commands<img src="../img/icons/keyboard_arrow_right.svg"></a>
+    <a>Guild Members<img src="../img/icons/keyboard_arrow_right.svg"></a>
+    <a>Admins<img src="../img/icons/keyboard_arrow_right.svg"></a>
+    <br>
+    <a>Docs & Guides<img src="../img/icons/keyboard_arrow_right.svg"></a>
+    <a>Support the project<img src="../img/icons/keyboard_arrow_right.svg"></a>
+</div>
+
+<div class="main-content">
+    <section id="primary-page-content">
+        <h1 id="automation-name" class="main-h1"></h1>
+        <img class="page-guild-icon"
+             src="https://cdn.discordapp.com/icons/820120530107367435/a_1e475865027f4a3d0b584783a9919e43.webp?size=4096">
+        <div></div>
+        <h2>Name your automation</h2>
+        <p class="section-p">Give a short name to help you recognize this automation, and it's purpose in the automation
+            list.</p>
+        <input class="input" id="name-input" oninput="update_name(this.value);" placeholder="Automation name">
+    </section>
+    <section id="sub-page-content"></section>
+</div>
+<div id="right-sidebar" class="right-sidebar"></div>
+
+</body>
+<script src="create.js"></script>
+<script src="events_data.js"></script>
+</html>
+
