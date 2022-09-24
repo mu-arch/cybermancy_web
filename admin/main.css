@@ -1,0 +1,179 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 100;
+    font-display: swap;
+    src: url(https://fonts.gstatic.com/s/inter/v12/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* latin */
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src: url(https://fonts.gstatic.com/s/inter/v12/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* latin */
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(https://fonts.gstatic.com/s/inter/v12/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* latin */
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url(https://fonts.gstatic.com/s/inter/v12/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+a {
+    all:unset;
+    box-sizing: border-box;
+    display: inline-block;
+    cursor: pointer;
+}
+a:visited {
+    all:unset;
+}
+
+.logo {
+    height: 35px;
+    width: 35px;
+    margin: 0 0 30px 0;
+    border-radius: 2000px;
+    background-image: radial-gradient(transparent 27%, #fff);
+    cursor: pointer;
+}
+
+body {
+    background-color: #1a1a1a;
+    color: #fff;
+    display: flex;
+    flex-direction: row;
+    font-family: Inter, sans-serif;
+}
+
+#sidebar-container {
+    width: 270px;
+    flex-shrink: 0;
+}
+
+.sidebar {
+    width: 209px;
+    height: 100vh;
+    border-right: 1px solid #2f2f2f;
+    padding: 30px;
+    position: fixed;
+}
+
+.view {
+    padding: 30px 50px;
+    flex-shrink: 0;
+    flex-grow: 1
+}
+
+.view-header {
+    height: 50px;
+    position: relative;
+}
+
+.view-header-controls .button {
+    background-color: #fff;
+    color: #000;
+    padding: 0 14px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: .2px;
+    border-radius: 3px;
+    line-height: 34px;
+    cursor: pointer;
+}
+
+.view-header-controls {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+h1 {
+    font-size: 30px;
+    font-weight: 700;
+}
+
+h1 span {
+    color: rgba(255, 255, 255, 0.45);
+    font-weight: 600;
+    padding: 0 10px;
+}
+
+h1 a, h1 a:visited {
+    color: #b2b2b2;
+}
+
+h1 a:hover {
+    text-decoration: underline;
+}
+
+
+.view-header p {
+    max-width: 500px;
+    padding: 25px 0;
+    line-height: 25px;
+    color: #b2b2b2;
+}
+
