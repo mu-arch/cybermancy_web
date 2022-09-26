@@ -101,7 +101,7 @@ a:visited {
 }
 
 body {
-    background-color: #1a1a1a;
+    background-color: #111111;
     color: #fff;
     display: flex;
     flex-direction: row;
@@ -121,7 +121,7 @@ body {
     position: fixed;
 }
 
-.view {
+#view {
     padding: 30px 50px;
     flex-shrink: 0;
     flex-grow: 1
@@ -130,6 +130,7 @@ body {
 .view-header {
     height: 50px;
     position: relative;
+    user-select: none;
 }
 
 .view-header-controls .button {

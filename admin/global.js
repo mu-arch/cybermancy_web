@@ -57,12 +57,50 @@ function logout() {
     })
 }
 
+function getDomain() {
+    return (location.protocol + '//' + location.host)
+}
+
+window.history.pushState = new Proxy(window.history.pushState, {
+    apply: (target, thisArg, argArray) => {
+        coreRouter(argArray[2].substring(getDomain().length))
+        return target.apply(thisArg, argArray);
+    },
+});
+
+function coreRouter(route) {
+    switch(route) {
+        case "/overview":
+            displayPage(mx_overview)
+            break;
+        case "/mx/new":
+            displayPage(mx_new)
+            break;
+        default:
+            displayPage(mx_overview)
+    }
+}
+
+function displayPage(obj) {
+    e("view").innerHTML = obj.data;
+    window.parent.document.title = obj.title + ' - PostAgent';
+}
+
+function navigate(route) {
+    history.pushState({}, "", getDomain() + "/" + route)
+}
+
 function generateSidebar() {
     let template = `<div class="sidebar">
-        <a href="http://localhost:8000/postagent/index.html">
+        <a href="">
             <div class="logo"></div>
         </a>
     </div>`
     e('sidebar-container').innerHTML = template;
 }
+
+
+
+
 generateSidebar()
+coreRouter(location.pathname)
