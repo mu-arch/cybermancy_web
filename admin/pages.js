@@ -3,19 +3,18 @@ const mx_overview = {
     "data": `<div class="view-header">
         <h1>Mail Exchanges</h1>
         <div class="view-header-controls">
-            <div href="/mx/new.html" class="button" onclick="navigate('mx/new')">Add exchange</div>
+            <div href="/mx/new.html" class="button" onclick="openControlMenu(this, mx_new)">Add exchange</div>
         </div>
+        <p>A Mail Exchange (MX) coordinates all SMTP send and receive operations for your domain.</p>
     </div>
-    <button type="button" onclick="logout()">Logout!</button>`
+    <div class="view-content"></div>`
 }
 
 let mx_new = {
-    "title": "New MX",
-    "data": `<div class="view-header">
-    <h1><a onclick="navigate('overview')">Mail Exchanges</a> <span>/</span> New</h1>
-    <div class="view-header-controls">
-
-    </div>
-    <p>Mail Exchanges (MX) coordinate all SMTP send and receive operations for your domain.</p>
-  </div>`
+    "data": `<h3>Add Exchange</h3>
+<p>Enter your domain name. We\'ll add DNS records in the next step.</p>
+<input placeholder="domain.com">
+<button class="confirm"><span style="background-size: 11px;" class="icon icon-check invert"></span><div>Confirm</div></button>
+<button class="cancel"><span style="background-size: 9px;" class="icon icon-cancel invert"></span><div>Cancel</div></button>
+`
 }

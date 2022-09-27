@@ -1,5 +1,4 @@
 const API_URL = 'http://10.0.0.26:3030';
-const LOGIN_PAGE_URL = '/auth/login.html';
 
 function e(e) {
     return document.getElementById(e);
@@ -38,8 +37,7 @@ async function get(url = '') {
         if (res.status === 200) {
             return res.json();
         } else if (res.status === 401) {
-            localStorage.removeItem('session');
-            window.location.href = LOGIN_PAGE_URL;
+            logout(true)
         } else {
             console.error(res)
         }
@@ -49,17 +47,28 @@ async function get(url = '') {
     });
 }
 
-function logout() {
-    get(API_URL + '/account/logout')
-    .then(r => {
+function logout(redirect_only) {
+    if (redirect_only) {
         localStorage.removeItem('session');
-        window.location.href = LOGIN_PAGE_URL;
-    })
+        window.location.href = "/account/login";
+    } else {
+        get(API_URL + '/account/logout')
+        .then(r => {
+            localStorage.removeItem('session');
+            window.location.href = "/account/login";
+        })
+    }
 }
+
+// ROUTER
 
 function getDomain() {
     return (location.protocol + '//' + location.host)
 }
+
+window.addEventListener("popstate", (e) => {
+    coreRouter(location.pathname)
+})
 
 window.history.pushState = new Proxy(window.history.pushState, {
     apply: (target, thisArg, argArray) => {
@@ -90,17 +99,71 @@ function navigate(route) {
     history.pushState({}, "", getDomain() + "/" + route)
 }
 
+// SIDEBAR
+
 function generateSidebar() {
     let template = `<div class="sidebar">
         <a href="">
             <div class="logo"></div>
         </a>
+        <button type="button" onclick="logout()">Logout!</button>
     </div>`
     e('sidebar-container').innerHTML = template;
+}
+
+// MENU AND MODAL
+
+function openControlMenu(callee, page) {
+    
+    control_menu_callee = callee;
+    
+    e("container").style.opacity = ".6";
+    e("click-sink").style.pointerEvents = "auto";
+    
+    //e("control-menu").style.width = control_menu_callee.offsetWidth + "px";
+    //e("control-menu").style.height = control_menu_callee.offsetHeight + "px";
+    e("control-menu").style.top =  control_menu_callee.getBoundingClientRect().top + "px";
+    e("control-menu").style.left = control_menu_callee.getBoundingClientRect().left + "px";
+    e("control-menu").innerHTML = page.data;
+    
+    
+    setTimeout(function(){
+        closing_allowed=false
+        
+        e("control-menu").style.opacity = "1";
+        //e("control-menu").style.width =  width + "px";
+        //e("control-menu").style.height = height + "px";
+        //e("control-menu").style.top =  control_menu_callee.getBoundingClientRect().top + "px";
+        //e("control-menu").style.left = (control_menu_callee.getBoundingClientRect().left + control_menu_callee.offsetWidth) + "px";
+        e("control-menu").style.transform = `translate(-250px, -10px)`
+    }, 10);
+    
+    
+}
+
+function detectModelClose(event) {
+    
+    if(closing_allowed === false) {
+        return
+    }
+    if (event.target.id !== "click-sink") {
+        return
+    }
+    closeControlModal()
+}
+
+function closeControlModal() {
+    closing_allowed=false
+    e("container").style.opacity = "1";
+    e("click-sink").style.pointerEvents = "none";
 }
 
 
 
 
+
+let closing_allowed=false;
+let control_menu_callee=null;
+document.body.addEventListener('mousedown', detectModelClose, true);
 generateSidebar()
 coreRouter(location.pathname)
