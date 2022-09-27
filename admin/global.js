@@ -120,22 +120,28 @@ function openControlMenu(callee, page) {
     e("container").style.opacity = ".6";
     e("click-sink").style.pointerEvents = "auto";
     
-    //e("control-menu").style.width = control_menu_callee.offsetWidth + "px";
-    //e("control-menu").style.height = control_menu_callee.offsetHeight + "px";
+    let button_width = callee.offsetWidth;
+    let button_height = callee.offsetHeight;
+    
     e("control-menu").style.top =  control_menu_callee.getBoundingClientRect().top + "px";
     e("control-menu").style.left = control_menu_callee.getBoundingClientRect().left + "px";
     e("control-menu").innerHTML = page.data;
+    
+    let menu_width = e("control-menu").offsetWidth;
+    let menu_height = e("control-menu").offsetHeight;
+    
+    
     
     
     setTimeout(function(){
         closing_allowed=false
         
-        e("control-menu").style.opacity = "1";
+        //e("control-menu").style.opacity = "1";
         //e("control-menu").style.width =  width + "px";
         //e("control-menu").style.height = height + "px";
         //e("control-menu").style.top =  control_menu_callee.getBoundingClientRect().top + "px";
         //e("control-menu").style.left = (control_menu_callee.getBoundingClientRect().left + control_menu_callee.offsetWidth) + "px";
-        e("control-menu").style.transform = `translate(-250px, -10px)`
+        //e("control-menu").style.transform = `translate(-250px, -10px)`
     }, 10);
     
     

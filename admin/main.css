@@ -161,11 +161,11 @@ h1 a:hover {
 #control-menu h3 {
     font-weight: 700;
     font-size: 17px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 #control-menu p {
-    margin-bottom: 25px;
+    margin-bottom: 15px;
     line-height: 25px;
 }
 
@@ -179,7 +179,7 @@ h1 a:hover {
     box-sizing: border-box;
     font-size: 14px;
     color: #000;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 #control-menu input:hover {
@@ -195,8 +195,7 @@ h1 a:hover {
 #control-menu button {
     background: none;
     border:none;
-    text-transform: uppercase;
-    font-weight: 700;
+    font-weight: 600;
     font-size: 15px;
     padding: 0 20px 0 0;
     transition: 200ms;
