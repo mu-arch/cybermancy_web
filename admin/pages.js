@@ -3,7 +3,7 @@ const mx_overview = {
     "data": `<div class="view-header">
         <h1>Mail Exchanges</h1>
         <div class="view-header-controls">
-            <div href="/mx/new.html" class="button" onclick="openControlMenu(this, mx_new)">Add exchange</div>
+            <div class="button" onclick="openControlMenu(this, mx_new)">Add exchange</div>
         </div>
         <p>A Mail Exchange (MX) coordinates all SMTP send and receive operations for your domain.</p>
     </div>
