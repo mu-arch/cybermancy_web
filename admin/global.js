@@ -120,94 +120,90 @@ function openControlMenu(callee, page) {
     
     e("click-sink").style.pointerEvents = "auto";
     
-    let button_dimensions = [callee.offsetWidth, callee.offsetHeight];
+    let button_dimensions = {
+        x: callee.offsetWidth,
+        y: callee.offsetHeight
+    };
     
     e("control-menu").innerHTML = page.data;
     
-    let menu_dimensions = [e("control-menu").offsetWidth, e("control-menu").offsetHeight];
+    let menu_dimensions = {
+        x: e("control-menu").offsetWidth,
+        y: e("control-menu").offsetHeight
+    }
     
-    let scale_percent = [button_dimensions[0] / menu_dimensions[0], button_dimensions[1] / menu_dimensions[1]]
+    let scale_percent = {
+        x: button_dimensions.x / menu_dimensions.x,
+        y: button_dimensions.y / menu_dimensions.y
+    };
     
-    let viewport_midpoint = [document.documentElement.clientWidth / 2, document.documentElement.clientHeight / 2];
-    
-    let button_midpoint = [
-        control_menu_callee.getBoundingClientRect().left + (button_dimensions[0] / 2),
-        control_menu_callee.getBoundingClientRect().top + (button_dimensions[1] / 2)
-    ]
-    
-    console.log(button_midpoint)
-    /*
-    let menu_midpoint = [
-        e("control-menu").getBoundingClientRect().left + (menu_dimensions[0] / 2),
-        e("control-menu").getBoundingClientRect().top + (menu_dimensions[1] / 2)
-    ]
-    console.log(menu_midpoint)
-    
-     */
-    
-    let angle = getAngleDegrees(viewport_midpoint[0],viewport_midpoint[1], button_midpoint[0],button_midpoint[1])
-    let menu_attachment_coords = [0,0]
-    let button_attachment_coords = [0,0]
-    let viewport_edge_intersection = [0,0]
-    
-    let region = 0
-    let nearest_measurement_angle
-    
-    //todo shortcircuit on absolute values like 90, 180, etc
-    
-    if (angle > 315 && angle < 45) {
-        region = 0
-        nearest_measurement_angle = 0
-    } else if (angle > 45 && angle < 135) {
-        region = 1
-        nearest_measurement_angle = 90
-    } else if (angle > 135 && angle < 225) {
-        region = 2
-        nearest_measurement_angle = 180
-    } else if (angle > 225 && angle < 315) {
-        region = 3
-        nearest_measurement_angle = 270
+    let button_midpoint = {
+        x: control_menu_callee.getBoundingClientRect().left + (button_dimensions.x / 2),
+        y: control_menu_callee.getBoundingClientRect().top + (button_dimensions.y / 2)
     }
     
     
-    let rel_angle = angle;
-    if (rel_angle < nearest_measurement_angle) {
-        rel_angle = nearest_measurement_angle - rel_angle
-    } else {
-        rel_angle = rel_angle - nearest_measurement_angle
+    
+    let ray_intersection = pointOnRect(button_midpoint.x,
+        button_midpoint.y,
+        0,
+        0,
+        document.documentElement.clientWidth ,
+        document.documentElement.clientHeight ,
+        false)
+    
+    let menu_insert_point = {
+        x: ray_intersection.x - (menu_dimensions.x / 2),
+        y: ray_intersection.y - (menu_dimensions.y / 2)
     }
     
+    let menu_midpoint = {
+        x: menu_insert_point.x + (menu_dimensions.x/2),
+        y: menu_insert_point.y + (menu_dimensions.y/2)
+    }
     
-    if (region === 0) {
-    
-    } else if (region === 1) {
-        viewport_edge_intersection = [
-            document.documentElement.clientWidth,
-            (document.documentElement.clientHeight /2) - (Math.tan(d_to_r(rel_angle)) * (document.documentElement.clientWidth /2))
+    let slope = getSlopeAngle(
+        [
+            button_midpoint.x,
+            button_midpoint.y
+        ],
+        [
+            document.documentElement.clientWidth/2,
+            document.documentElement.clientHeight/2
         ]
-    }
+    );
+    slope = Math.tan(toRadians(slope))
+    
+
+    let center_height = document.documentElement.clientHeight/2
+    
+    console.log(center_height, (Math.abs(menu_midpoint.y) + center_height) , (button_midpoint.y + center_height), slope)
+    
+    let subtract_x = ((Math.abs(menu_midpoint.y) + center_height) - (center_height - button_midpoint.y)) /slope;
+    console.log(subtract_x)
+    menu_insert_point.x -= subtract_x;
+    menu_insert_point.y = button_midpoint.y - (button_dimensions.y/2)
     
     
     
-    console.log(viewport_edge_intersection)
     
-    let final_menu_pos_left = button_attachment_coords[0] - menu_attachment_coords[0];
-    let final_menu_pos_top = button_attachment_coords[1] - menu_attachment_coords[1];
     
-    e("control-menu").style.top =  final_menu_pos_top + "px";
-    e("control-menu").style.left = final_menu_pos_left + "px";
-    e("control-menu").style.opacity = "1";
+    
+    
+    e("control-menu").style.top =  menu_insert_point.y + "px";
+    e("control-menu").style.left = menu_insert_point.x + "px";
+    e("control-menu").style.opacity = ".5";
     e("control-menu").style.pointerEvents = "all";
     
-    e("control-menu").style.transform = `scale(${scale_percent[0]}, ${scale_percent[1]})`;
-    e("control-menu").style.transformOrigin = `${menu_attachment_coords[0]}px ${menu_attachment_coords[1]}px`;
+    //e("control-menu").style.transform = `scale(${scale_percent[0]}, ${scale_percent[1]})`;
+    //e("control-menu").style.transformOrigin = `${ray_intersection.x}px ${ray_intersection.y}px`;
     
     
     setTimeout(function(){
         closing_allowed=false
         
-        e("control-menu").style.transitionDuration = `100ms`;
-        e("control-menu").style.transform = `scale(1, 1)`;
+        e("control-menu").style.transitionDuration = `100000000ms`;
+        //e("control-menu").style.transform = `scale(1, 1)`;
         //e("control-menu").style.opacity = "1";
         //e("control-menu").style.width =  width + "px";
         //e("control-menu").style.height = height + "px";
@@ -219,22 +215,57 @@ function openControlMenu(callee, page) {
     
 }
 
-function d_to_r(degrees) {
+function toRadians(degrees)
+{
     var pi = Math.PI;
     return degrees * (pi/180);
 }
 
-function getAngleDegrees(fromX,fromY,toX,toY,force360 = true) {
-    let deltaX = fromX-toX;
-    let deltaY = fromY-toY; // reverse
-    let radians = Math.atan2(deltaY, deltaX)
-    let degrees = (radians * 180) / Math.PI - 90; // rotate
-    if (force360) {
-        while (degrees >= 360) degrees -= 360;
-        while (degrees < 0) degrees += 360;
+function getSlopeAngle(s1,s2) {
+    return Math.atan((s2[1] - s1[1]) / (s2[0] - s1[0])) * 180/Math.PI;
+}
+
+function pointOnRect(x, y, minX, minY, maxX, maxY, validate) {
+    //assert minX <= maxX;
+    //assert minY <= maxY;
+    if (validate && (minX < x && x < maxX) && (minY < y && y < maxY))
+        throw "Point " + [x,y] + "cannot be inside "
+        + "the rectangle: " + [minX, minY] + " - " + [maxX, maxY] + ".";
+    var midX = (minX + maxX) / 2;
+    var midY = (minY + maxY) / 2;
+    // if (midX - x == 0) -> m == ±Inf -> minYx/maxYx == x (because value / ±Inf = ±0)
+    var m = (midY - y) / (midX - x);
+    
+    if (x <= midX) { // check "left" side
+        var minXy = m * (minX - x) + y;
+        if (minY <= minXy && minXy <= maxY)
+            return {x: minX, y: minXy};
     }
-    console.log('angle to degree:',{deltaX,deltaY,radians,degrees})
-    return degrees;
+    
+    if (x >= midX) { // check "right" side
+        var maxXy = m * (maxX - x) + y;
+        if (minY <= maxXy && maxXy <= maxY)
+            return {x: maxX, y: maxXy};
+    }
+    
+    if (y <= midY) { // check "top" side
+        var minYx = (minY - y) / m + x;
+        if (minX <= minYx && minYx <= maxX)
+            return {x: minYx, y: minY};
+    }
+    
+    if (y >= midY) { // check "bottom" side
+        var maxYx = (maxY - y) / m + x;
+        if (minX <= maxYx && maxYx <= maxX)
+            return {x: maxYx, y: maxY};
+    }
+    
+    // edge case when finding midpoint intersection: m = 0/0 = NaN
+    if (x === midX && y === midY) return {x: x, y: y};
+    
+    // Should never happen :) If it does, please tell me!
+    throw "Cannot find intersection for " + [x,y]
+    + " inside rectangle " + [minX, minY] + " - " + [maxX, maxY] + ".";
 }
 
 function detectModelClose(event) {
