@@ -4,6 +4,16 @@ function e(e) {
     return document.getElementById(e);
 }
 
+let last_rate_limit_time = 0;
+function rate_limit(fn) {
+    let current_time = Date.now();
+    if (current_time - last_execution < 1000)
+        return;
+    
+    last_rate_limit_time = current_time;
+    fn();
+}
+
 async function post(url = '', data = {}) {
     // Default options are marked with *
     const response = await fetch(url, {
@@ -114,18 +124,22 @@ function generateSidebar() {
 
 // MENU AND MODAL
 
-function openControlMenu(callee, page) {
+function openControlMenu(callee, page, x, y, side, width, tx,ty) {
+    closing_allowed=false
+    
+    width -= 60; //accounts for 20px padding on both sides
     
     control_menu_callee = callee;
     
     e("click-sink").style.pointerEvents = "auto";
     
     let button_dimensions = {
-        x: callee.offsetWidth,
-        y: callee.offsetHeight
+        x: control_menu_callee.offsetWidth,
+        y: control_menu_callee.offsetHeight
     };
     
     e("control-menu").innerHTML = page.data;
+    e("control-menu").style.width =  width + "px";
     
     let menu_dimensions = {
         x: e("control-menu").offsetWidth,
@@ -137,135 +151,28 @@ function openControlMenu(callee, page) {
         y: button_dimensions.y / menu_dimensions.y
     };
     
-    let button_midpoint = {
-        x: control_menu_callee.getBoundingClientRect().left + (button_dimensions.x / 2),
-        y: control_menu_callee.getBoundingClientRect().top + (button_dimensions.y / 2)
+    e("control-menu").style.top =  y + "px";
+    
+    if (side === "right") {
+        e("control-menu").style.right = x + "px";
+    } else {
+        e("control-menu").style.left = x + "px";
     }
     
+    e("control-menu").style.opacity = "1";
     
-    
-    let ray_intersection = pointOnRect(button_midpoint.x,
-        button_midpoint.y,
-        0,
-        0,
-        document.documentElement.clientWidth ,
-        document.documentElement.clientHeight ,
-        false)
-    
-    let menu_insert_point = {
-        x: ray_intersection.x - (menu_dimensions.x / 2),
-        y: ray_intersection.y - (menu_dimensions.y / 2)
-    }
-    
-    let menu_midpoint = {
-        x: menu_insert_point.x + (menu_dimensions.x/2),
-        y: menu_insert_point.y + (menu_dimensions.y/2)
-    }
-    
-    let slope = getSlopeAngle(
-        [
-            button_midpoint.x,
-            button_midpoint.y
-        ],
-        [
-            document.documentElement.clientWidth/2,
-            document.documentElement.clientHeight/2
-        ]
-    );
-    slope = Math.tan(toRadians(slope))
-    
-
-    let center_height = document.documentElement.clientHeight/2
-    
-    console.log(center_height, (Math.abs(menu_midpoint.y) + center_height) , (button_midpoint.y + center_height), slope)
-    
-    let subtract_x = ((Math.abs(menu_midpoint.y) + center_height) - (center_height - button_midpoint.y)) /slope;
-    console.log(subtract_x)
-    menu_insert_point.x -= subtract_x;
-    menu_insert_point.y = button_midpoint.y - (button_dimensions.y/2)
-    
-    
-    
-    
-    
-    
-    
-    e("control-menu").style.top =  menu_insert_point.y + "px";
-    e("control-menu").style.left = menu_insert_point.x + "px";
-    e("control-menu").style.opacity = ".5";
-    e("control-menu").style.pointerEvents = "all";
-    
-    //e("control-menu").style.transform = `scale(${scale_percent[0]}, ${scale_percent[1]})`;
-    //e("control-menu").style.transformOrigin = `${ray_intersection.x}px ${ray_intersection.y}px`;
+    e("control-menu").style.transform = `scale(${scale_percent.x}, ${scale_percent.y})`;
+    e("control-menu").style.transformOrigin = `${tx}px ${ty}px`;
     
     
     setTimeout(function(){
-        closing_allowed=false
-        
-        e("control-menu").style.transitionDuration = `100000000ms`;
-        //e("control-menu").style.transform = `scale(1, 1)`;
-        //e("control-menu").style.opacity = "1";
-        //e("control-menu").style.width =  width + "px";
-        //e("control-menu").style.height = height + "px";
-        //e("control-menu").style.top =  control_menu_callee.getBoundingClientRect().top + "px";
-        //e("control-menu").style.left = (control_menu_callee.getBoundingClientRect().left + control_menu_callee.offsetWidth) + "px";
-        //e("control-menu").style.transform = `translate(-250px, -10px)`
-    }, 10);
+        closing_allowed=true
+        e("control-menu").style.pointerEvents = "all";
+        e("control-menu").style.transitionDuration = `100ms`;
+        e("control-menu").style.transform = `scale(1, 1)`;
+    }, 5);
     
     
-}
-
-function toRadians(degrees)
-{
-    var pi = Math.PI;
-    return degrees * (pi/180);
-}
-
-function getSlopeAngle(s1,s2) {
-    return Math.atan((s2[1] - s1[1]) / (s2[0] - s1[0])) * 180/Math.PI;
-}
-
-function pointOnRect(x, y, minX, minY, maxX, maxY, validate) {
-    //assert minX <= maxX;
-    //assert minY <= maxY;
-    if (validate && (minX < x && x < maxX) && (minY < y && y < maxY))
-        throw "Point " + [x,y] + "cannot be inside "
-        + "the rectangle: " + [minX, minY] + " - " + [maxX, maxY] + ".";
-    var midX = (minX + maxX) / 2;
-    var midY = (minY + maxY) / 2;
-    // if (midX - x == 0) -> m == ±Inf -> minYx/maxYx == x (because value / ±Inf = ±0)
-    var m = (midY - y) / (midX - x);
-    
-    if (x <= midX) { // check "left" side
-        var minXy = m * (minX - x) + y;
-        if (minY <= minXy && minXy <= maxY)
-            return {x: minX, y: minXy};
-    }
-    
-    if (x >= midX) { // check "right" side
-        var maxXy = m * (maxX - x) + y;
-        if (minY <= maxXy && maxXy <= maxY)
-            return {x: maxX, y: maxXy};
-    }
-    
-    if (y <= midY) { // check "top" side
-        var minYx = (minY - y) / m + x;
-        if (minX <= minYx && minYx <= maxX)
-            return {x: minYx, y: minY};
-    }
-    
-    if (y >= midY) { // check "bottom" side
-        var maxYx = (maxY - y) / m + x;
-        if (minX <= maxYx && maxYx <= maxX)
-            return {x: maxYx, y: maxY};
-    }
-    
-    // edge case when finding midpoint intersection: m = 0/0 = NaN
-    if (x === midX && y === midY) return {x: x, y: y};
-    
-    // Should never happen :) If it does, please tell me!
-    throw "Cannot find intersection for " + [x,y]
-    + " inside rectangle " + [minX, minY] + " - " + [maxX, maxY] + ".";
 }
 
 function detectModelClose(event) {
@@ -282,8 +189,31 @@ function detectModelClose(event) {
 
 function closeControlModal() {
     closing_allowed=false
-    e("container").style.opacity = "1";
     e("click-sink").style.pointerEvents = "none";
+    e("control-menu").style.pointerEvents = "none";
+    
+    let button_dimensions = {
+        x: control_menu_callee.offsetWidth,
+        y: control_menu_callee.offsetHeight
+    };
+    
+    let menu_dimensions = {
+        x: e("control-menu").offsetWidth,
+        y: e("control-menu").offsetHeight
+    }
+    
+    let scale_percent = {
+        x: button_dimensions.x / menu_dimensions.x,
+        y: button_dimensions.y / menu_dimensions.y
+    };
+    
+    e("control-menu").style.transform = `scale(${scale_percent.x}, ${scale_percent.y})`;
+    
+    setTimeout(function(){
+        closing_allowed=true
+        e("control-menu").style.transitionDuration = `0ms`;
+        e("control-menu").style.opacity = "0";
+    }, 100);
 }
 
 
