@@ -28,7 +28,7 @@ let mx_new = {
             e("form-buttons").style.pointerEvents = "none";
             e("form-buttons").style.opacity = ".25";
             post(API_URL + '/mx/create', obj).then(r => {
-            
+                console.log(r)
             })
         }
     }
