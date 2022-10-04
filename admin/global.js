@@ -167,11 +167,13 @@ function openControlMenu(callee, page, x, y, side, width, tx,ty) {
     
     setTimeout(function(){
         closing_allowed=true
-        e("control-menu").style.pointerEvents = "all";
         e("control-menu").style.transitionDuration = `100ms`;
         e("control-menu").style.transform = `scale(1, 1)`;
     }, 5);
-    
+
+    setTimeout(function(){
+        e("control-menu").style.pointerEvents = "all";
+    }, 100);
     
 }
 
@@ -216,6 +218,21 @@ function closeControlModal() {
     }, 100);
 }
 
+function insertLoadingAnimation(element, lightMode) {
+    if (lightMode) {
+        element.innerHTML = `<div class="load-2 line-dark">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>`
+    } else {
+        element.innerHTML = `<div class="load-2">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>`
+    }
+}
 
 
 
