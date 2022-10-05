@@ -121,6 +121,7 @@ a:visited {
 h1 {
     font-size: 30px;
     font-weight: 700;
+    display: inline-block;
 }
 
 h1 span {
@@ -135,6 +136,33 @@ h1 a, h1 a:visited {
 
 h1 a:hover {
     text-decoration: underline;
+}
+
+#syncing {
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 1px;
+    font-size: 10px;
+    color: #8f8f8f;
+    margin: 0 15px;
+    position: relative;
+    top: -5px;
+}
+
+.pulsate {
+    -webkit-animation: pulsate 3s ease-out;
+    -webkit-animation-iteration-count: infinite;
+}
+@-webkit-keyframes pulsate {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.3;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 
@@ -236,17 +264,18 @@ h1 a:hover {
     vertical-align: top;
 }
 
+#modal-notif {
+    display: none;
+    margin-top: 15px;
+    font-weight: 600;
+    color: red;
+}
+
 @-moz-document url-prefix() {
     #control-menu button div {
         position: relative;
         top: -1px;
     }
-}
-
-
-
-.view-content {
-
 }
 
 #click-sink {
@@ -257,10 +286,6 @@ h1 a:hover {
     top:0;
     left:0;
     pointer-events: none;
-}
-
-.load-2 {
-    margin-top: 10px;
 }
 
 .line {
@@ -285,3 +310,88 @@ h1 a:hover {
     50% {width: 35px;}
     100% {width: 15px;}
 }
+
+.view-content {
+    margin-top: 10px;
+}
+
+.view-content table {
+    width: 100%;
+}
+
+.view-content th {
+    text-transform: uppercase;
+    font-size: 11px;
+    text-align: left;
+    font-weight: 500;
+    border-bottom: 1px solid #494949;
+    padding-bottom: 15px;
+}
+
+.view-content td {
+    padding: 20px 0;
+    border-bottom: 1px solid #2d2d2d;
+    cursor:pointer;
+}
+
+.view-content tr:hover:not(tr:first-child) {
+    background: #0e0e0e;
+}
+
+.view-content tr:hover .primary {
+    background: #fff;
+    color: #000;
+    padding: 4px 10px;
+    border-radius: 99px;
+}
+
+.view-content tr:hover .click-to-open{
+    display: inline;
+}
+
+.click-to-open {
+    display: none;
+    padding-left:12px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.58);
+    font-size: 12px;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.primary {
+    font-weight: 600;
+    font-size: 15px;
+    display: inline;
+}
+
+.number {
+    font-family: monospace;
+}
+
+.bold {
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 11px;
+}
+
+.high-vis {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: inline;
+    padding: 3px 8px;
+    font-weight: 600;
+    font-size: 11px;
+    border-radius: 5px;
+}
+
+.valid {
+    background-color: rgba(34, 255, 0,.2);
+    color: rgb(34, 255, 0);
+}
+
+.invalid {
+    background-color: rgba(255, 0, 0, 0.2);
+    color: rgb(255, 0, 0);
+}
+

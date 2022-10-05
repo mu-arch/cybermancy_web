@@ -30,35 +30,35 @@ async function post(url = '', data = {}) {
     .catch((error) => {
         console.error('Error:', error);
     });
-    return response.json(); // parses JSON response into native JavaScript objects
+
+    if (response.status === 401) {
+        logout(true)
+    }
+    return response.json()
 }
 
 async function get(url = '') {
-    const response = await fetch(url, {
+    let response = await fetch(url, {
         method: 'GET',
         mode: 'cors',
         cache: 'no-cache',
         headers: {
             'Authorization': localStorage.getItem('session'),
             'Account-Id': localStorage.getItem('account_id'),
-        },
-    })
-    .then(res => {
-        if (res.status === 200) {
-            return res.json();
-        } else if (res.status === 401) {
-            logout(true)
-        } else {
-            console.error(res)
         }
     })
     .catch((error) => {
         console.log('Error:', error);
     });
+
+    if (response.status === 401) {
+        logout(true)
+    }
+    return response.json()
 }
 
-function logout(redirect_only) {
-    if (redirect_only) {
+function logout(do_not_make_logout_rx_to_api) {
+    if (do_not_make_logout_rx_to_api) {
         localStorage.removeItem('session');
         window.location.href = "/account/login";
     } else {
@@ -70,6 +70,15 @@ function logout(redirect_only) {
     }
 }
 
+function validateDomain(domain) {
+    if (/^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$/.test(domain)) {
+        return true
+    }
+    else {
+        return false
+    }
+}
+
 // ROUTER
 
 function getDomain() {
@@ -77,11 +86,12 @@ function getDomain() {
 }
 
 window.addEventListener("popstate", (e) => {
-    coreRouter(location.pathname)
+    //coreRouter(location.pathname)
 })
 
 window.history.pushState = new Proxy(window.history.pushState, {
     apply: (target, thisArg, argArray) => {
+        console.log("navigated")
         coreRouter(argArray[2].substring(getDomain().length))
         return target.apply(thisArg, argArray);
     },
@@ -103,6 +113,11 @@ function coreRouter(route) {
 function displayPage(obj) {
     e("view").innerHTML = obj.data;
     window.parent.document.title = obj.title + ' - PostAgent';
+
+    for (let fn in obj.collect) {
+        obj.collect[fn]()
+    }
+
 }
 
 function navigate(route) {
@@ -125,6 +140,9 @@ function generateSidebar() {
 // MENU AND MODAL
 
 function openControlMenu(callee, page, x, y, side, width, tx,ty) {
+    for (let fn in page.collect) {
+        page.collect[fn]()
+    }
     closing_allowed=false
     
     width -= 60; //accounts for 20px padding on both sides
@@ -220,17 +238,9 @@ function closeControlModal() {
 
 function insertLoadingAnimation(element, lightMode) {
     if (lightMode) {
-        element.innerHTML = `<div class="load-2 line-dark">
-                <div class="line"></div>
-                <div class="line"></div>
-                <div class="line"></div>
-            </div>`
+        element.innerHTML = `<div class="load-2 line-dark"><div class="line"></div><div class="line"></div><div class="line"></div></div>`
     } else {
-        element.innerHTML = `<div class="load-2">
-                <div class="line"></div>
-                <div class="line"></div>
-                <div class="line"></div>
-            </div>`
+        element.innerHTML = `<div class="load-2"><div class="line"></div><div class="line"></div><div class="line"></div></div>`
     }
 }
 
