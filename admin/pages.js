@@ -27,7 +27,6 @@ const mx_overview = {
 </div>`,
     collect: [
         async function () {
-            console.log("building page")
             let ls_mxs = localStorage.getItem('mx_overview_mxs');
             if (ls_mxs) {
                 ls_mxs = JSON.parse(ls_mxs)
@@ -38,17 +37,21 @@ const mx_overview = {
                     while (e("table-body").childNodes.length > 2) {
                         e("table-body").removeChild(e("table-body").lastChild);
                     }
-                    mx_overview.operations.insert_mxs(mxs)
-                    localStorage.setItem('mx_overview_mxs', JSON.stringify(mxs))
+                        mx_overview.operations.insert_mxs(mxs)
+                        localStorage.setItem('mx_overview_mxs', JSON.stringify(mxs))
                 }
             } else {
                 e("table-body").insertAdjacentHTML("beforeend", `<tr id="loading"><td style="border-bottom: none"><div class="load-2"><div class="line"></div><div class="line"></div><div class="line"></div></div></td></tr>`);
                 let mxs = await mx_overview.operations.get_list()
                 e("loading").remove();
-                mx_overview.operations.insert_mxs(mxs)
-                localStorage.setItem('mx_overview_mxs', JSON.stringify(mxs))
+                    mx_overview.operations.insert_mxs(mxs)
+                    localStorage.setItem('mx_overview_mxs', JSON.stringify(mxs))
+
             }
             e("syncing").remove();
+            if (localStorage.getItem('mx_overview_mxs') === "[]") {
+                e("table-body").insertAdjacentHTML("beforeend", `<tr><td style="border-bottom: none">You have no MXs yet.</td></tr>`);
+            }
         }
         ],
     operations: {
