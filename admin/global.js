@@ -1,4 +1,4 @@
-const API_URL = 'http://0.0.0.0:3030';
+const API_URL = 'http://10.0.0.26:3030';
 
 function e(e) {
     return document.getElementById(e);
@@ -86,27 +86,29 @@ function getDomain() {
 }
 
 window.addEventListener("popstate", (e) => {
-    //coreRouter(location.pathname)
+    coreRouter(location.pathname)
 })
 
 window.history.pushState = new Proxy(window.history.pushState, {
     apply: (target, thisArg, argArray) => {
-        console.log("navigated")
         coreRouter(argArray[2].substring(getDomain().length))
         return target.apply(thisArg, argArray);
     },
 });
 
 function coreRouter(route) {
-    switch(route) {
-        case "/overview":
-            displayPage(mx_overview)
+    switch(true) {
+        case route === "/overview":
+            displayPage(mxs_list_overview)
             break;
-        case "/mx/new":
+        case route === "/mx/new":
             displayPage(mx_new)
             break;
-        default:
+        case (route.split('/')[1] === "mx" && route.split('/')[3] === "overview"):
             displayPage(mx_overview)
+            break;
+        default:
+            displayPage(not_found)
     }
 }
 
@@ -127,19 +129,15 @@ function navigate(route) {
 // SIDEBAR
 
 function generateSidebar() {
-    let template = `<div class="sidebar">
-        <a href="">
-            <div class="logo"></div>
-        </a>
-        <button type="button" onclick="logout()">Logout!</button>
-        <div class="button" onclick="openControlMenu(this, mx_new)">Add exchange</div>
-    </div>`
-    e('sidebar-container').innerHTML = template;
+
+    e('sidebar-container').innerHTML = sidebar.data;
+    e('email-slot').innerHTML = localStorage.getItem("email");
+
 }
 
 // MENU AND MODAL
 
-function openControlMenu(callee, page, x, y, side, width, tx,ty) {
+function openControlMenu(callee, page, x, y, side, height, width, tx,ty) {
     for (let fn in page.collect) {
         page.collect[fn]()
     }
@@ -168,9 +166,14 @@ function openControlMenu(callee, page, x, y, side, width, tx,ty) {
         x: button_dimensions.x / menu_dimensions.x,
         y: button_dimensions.y / menu_dimensions.y
     };
-    
-    e("control-menu").style.top =  y + "px";
-    
+
+    if (height === "top") {
+        e("control-menu").style.top =  y + "px";
+    } else {
+        ty = e("control-menu").offsetHeight - ty;
+        e("control-menu").style.bottom =  y + "px";
+    }
+
     if (side === "right") {
         e("control-menu").style.right = x + "px";
     } else {
@@ -180,6 +183,7 @@ function openControlMenu(callee, page, x, y, side, width, tx,ty) {
     e("control-menu").style.opacity = "1";
     
     e("control-menu").style.transform = `scale(${scale_percent.x}, ${scale_percent.y})`;
+
     e("control-menu").style.transformOrigin = `${tx}px ${ty}px`;
     
     
@@ -231,8 +235,7 @@ function closeControlModal() {
     
     setTimeout(function(){
         closing_allowed=true
-        e("control-menu").style.transitionDuration = `0ms`;
-        e("control-menu").style.opacity = "0";
+        e("control-menu").removeAttribute('style')
     }, 100);
 }
 
