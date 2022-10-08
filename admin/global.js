@@ -1,5 +1,7 @@
 const API_URL = 'http://10.0.0.26:3030';
 
+let last_navigation_time = new Date();
+
 function e(e) {
     return document.getElementById(e);
 }
@@ -15,6 +17,7 @@ function rate_limit(fn) {
 }
 
 async function post(url = '', data = {}) {
+    let current_nav_time = last_navigation_time
     // Default options are marked with *
     const response = await fetch(url, {
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -52,6 +55,7 @@ async function get(url = '') {
     });
 
     if (response.status === 401) {
+        console.log(response.status)
         logout(true)
     }
     return response.json()
@@ -97,27 +101,35 @@ window.history.pushState = new Proxy(window.history.pushState, {
 });
 
 function coreRouter(route) {
+    last_navigation_time = new Date();
+
+
+
     switch(true) {
-        case route === "/overview":
-            displayPage(mxs_list_overview)
+        case route === "/":
+            displayPage(mxs_list_overview, route)
             break;
         case route === "/mx/new":
-            displayPage(mx_new)
+            displayPage(mx_new, route)
+            break;
+        case route === "/account/settings":
+            displayPage(account_settings, route)
             break;
         case (route.split('/')[1] === "mx" && route.split('/')[3] === "overview"):
-            displayPage(mx_overview)
+            displayPage(mx_overview, route)
             break;
         default:
-            displayPage(not_found)
+            displayPage(not_found, route)
     }
 }
 
-function displayPage(obj) {
+function displayPage(obj, url) {
+    last_navigation_time = new Date();
     e("view").innerHTML = obj.data;
     window.parent.document.title = obj.title + ' - PostAgent';
 
     for (let fn in obj.collect) {
-        obj.collect[fn]()
+        obj.collect[fn](last_navigation_time, url)
     }
 
 }

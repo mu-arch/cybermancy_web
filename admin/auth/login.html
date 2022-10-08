@@ -54,7 +54,7 @@
                 localStorage.setItem('session', resp['session']);
                 localStorage.setItem('account_id', resp['account_id']);
                 localStorage.setItem('session_created_at', resp['session_created_at']);
-                window.location.href = "../overview";
+                window.location.href = "../";
             } else if (xhr.status === 401) {
                 e('notification').style.color = 'orangered';
                 e('notification').innerHTML = "That email or password is not linked to a valid account.";
