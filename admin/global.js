@@ -112,8 +112,11 @@ function coreRouter(route) {
         case route === "/mx/new":
             displayPage(mx_new, route)
             break;
+        case route === "/account":
+            displayPage(account, route)
+            break;
         case route === "/account/settings":
-            displayPage(account_settings, route)
+            displayPage(general_settings, route)
             break;
         case (route.split('/')[1] === "mx" && route.split('/')[3] === "overview"):
             displayPage(mx_overview, route)
