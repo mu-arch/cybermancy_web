@@ -115,7 +115,7 @@ function coreRouter(route) {
         case route === "/account":
             displayPage(account, route)
             break;
-        case route === "/account/settings":
+        case route === "/account/general":
             displayPage(general_settings, route)
             break;
         case (route.split('/')[1] === "mx" && route.split('/')[3] === "overview"):

@@ -1,19 +1,15 @@
-const sidebar = {
+const not_found = {
+    title: "Page not found",
     //language=HTML
     data: `
-        <div class="sidebar">
-            <a onclick="navigate('')">
-                <div class="logo"></div>
-                <div class="logo-text">PostAgent</div>
-            </a>
-            <div class="account"
-                 onmousedown="openControlMenu(this, account_menu, 0, 0, 'left','bottom', 269, 134.5, 0)">
-                <div class="profile-icon">
-                    <div class="icon-pacman" style="width: 18px; height: 18px;margin: 9px;filter:invert(100%)"></div>
-                </div>
-                <div id="email-slot" class="email">unknown</div>
-                <div class="icon-expand nav-icon"></div>
-            </div>
+        <div class="view-header">
+            <h1>Page not found</h1>
+
+            <p>The page your requested could not be found. If you think this is an application error please report it to
+                us.</p>
+        </div>
+        <div class="view-content">
+            <div class="button" onclick="navigate('')">Return to overview</div>
         </div>`
 }
 
@@ -22,26 +18,24 @@ const mxs_list_overview = {
     //language=HTML
     data: `
         <div class="view-header">
-            <h1>Mail Exchanges</h1><span id="syncing"><i class="gg-loadbar-alt"></i></span>
+            <h1>Mail Exchangers</h1><span id="syncing"><i class="gg-loadbar-alt"></i></span>
             <div class="view-header-controls">
                 <div class="button" onmousedown="openControlMenu(this, mx_new, 50, 20, 'right', 'top', 380, 380, 15)">
-                    Add exchange
+                    Add exchanger
                 </div>
             </div>
-            <p>A Mail Exchange (MX) coordinates all SMTP send and receive operations for your domain.</p>
+            <p>A Mail Exchanger (MX) coordinates all SMTP send and receive operations for your domain.</p>
         </div>
         <div class="view-content">
             <table>
                 <colgroup>
                     <col span="1">
-                    <col span="1" style="width: 150px;">
                     <col span="1" style="width: 90px;">
                     <col span="1" style="width: 70px;">
                 </colgroup>
                 <tbody id="table-body">
                 <tr>
                     <th>domain</th>
-                    <th>usage (30 days)</th>
                     <th>grants</th>
                     <th>dns</th>
                 </tr>
@@ -187,7 +181,6 @@ const mxs_list_overview = {
 
                 e("table-body").insertAdjacentHTML("beforeend", `<tr onclick="navigate('mx/${item['mx']}/overview')">
         <td><div class="primary">${item["domain"]}</div><div class="click-to-open">open</div></td>
-        <td><div class="number">0 cr</div></td>
         <td><div class="bold">${acl_grants}</div></td>
         <td><div class="high-vis ${dns_valid}">${dns_valid}</div></td>
         </tr>`)
@@ -198,7 +191,7 @@ const mxs_list_overview = {
 
 let mx_new = {
     //language=HTML
-    data: `<h3>Add Exchange</h3>
+    data: `<h3>Add Exchanger</h3>
     <p>Enter your domain name. We\'ll add DNS records in the next step.</p>
     <input name="domain" placeholder="domain.com">
     <div id="form-buttons">
@@ -243,37 +236,65 @@ let mx_new = {
     }
 }
 
-let account_menu = {
-    data: `<h3>Options</h3>
-<div class="account-menu"><div onclick="navigate('account'); closeControlModal()"><span class="icon-settings account-icon"></span>Account</div>
-<div onclick=""><span class="icon-graph account-icon"></span>Billing Wallets</div>
-<div onclick="logout()" style="margin-bottom: 50px;"><span class="icon-bowl account-icon"></span>Logout</div></div>`
-}
-
-const not_found = {
-    title: "Page not found",
+const sidebar = {
     //language=HTML
     data: `
-        <div class="view-header">
-            <h1>Page not found</h1>
-
-            <p>The page your requested could not be found. If you think this is an application error please report it to
-                us.</p>
-        </div>
-        <div class="view-content">
-            <div class="button" onclick="navigate('')">Return to overview</div>
+        <div class="sidebar">
+            <a onclick="navigate('')">
+                <div class="logo"></div>
+                <div class="logo-text">PostAgent</div>
+            </a>
+            <div class="account"
+                 onmousedown="openControlMenu(this, account_menu, 0, 0, 'left','bottom', 269, 134.5, 0)">
+                <div class="profile-icon">
+                    <div class="icon-pacman" style="width: 18px; height: 18px;margin: 9px;filter:invert(100%)"></div>
+                </div>
+                <div id="email-slot" class="email">unknown</div>
+                <div class="icon-expand nav-icon"></div>
+            </div>
         </div>`
 }
 
+let account_menu = {
+    data: `<h3>Account Menu</h3>
+<div class="account-menu"><div onclick="navigate('account'); closeControlModal()"><span class="icon-settings account-icon"></span>Account</div>
+<div onclick="logout()" style="margin-bottom: 50px;"><span class="icon-bowl account-icon"></span>Logout</div></div>`
+}
+
 const account = {
-    title: "Account Settings",
+    title: "Account",
     //language=HTML
     data: `
         <div class="view-header">
-            <h1>Account</h1><span id="syncing"><i class="gg-loadbar-alt"></i></span>
+            <h1>Account</h1>
+            <p>Here you can manage your billing and account settings globally across Cybermancy services.</p>
         </div>
         <div class="view-content">
-            <div class="button" onclick="navigate('')">Return to Exchange list</div>
+            
+            <div class="settings-category">
+                <h2>User</h2>
+                <div class="settings-category-items">
+                    <div class="settings-option" onclick="navigate('account/general')">
+                        <h3>General</h3>
+                        <p>General settings for your user account.</p>
+                    </div>
+                    <div class="settings-option">
+                        <h3>Login History</h3>
+                        <p>View the login history.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-category">
+                <h2>Billing</h2>
+                <div class="settings-category-items">
+                    <div class="settings-option">
+                        <h3>Wallets</h3>
+                        <p>Create & view connected bank accounts.</p>
+                    </div>
+                </div>
+            </div>
+            
         </div>`,
     collect: [
         async function (start_time, url) {
@@ -288,13 +309,11 @@ const general_settings = {
     //language=HTML
     data: `
         <div class="view-header">
-            <h1>Account<span>/</span>Settings</h1><span id="syncing"><i class="gg-loadbar-alt"></i></span>
-            <p>General settings related to your account. These account settings are global across all Cybermancy
-                services.</p>
+            <h1><a onclick="navigate('account')">Account</a><span>/</span>General</h1><span id="syncing"><i class="gg-loadbar-alt"></i></span>
+            <p>General settings related to your account.</p>
         </div>
         <div class="view-content">
             <div class="menu-section">
-                <h3>Config</h3>
 
                 <div class="menu-wrapper">
                     <div class="menu-part">
@@ -332,7 +351,7 @@ const general_settings = {
                     <div class="menu-part">
                         <div class="menu-head">
                             <h4>Timezone</h4>
-                            <p>Set the timezone to be used to display timestamps in the GUI.</p>
+                            <p>Set the timezone to be used to display timestamps.</p>
                         </div>
                         <div class="menu-content">
 
@@ -342,25 +361,7 @@ const general_settings = {
                 </div>
             </div>
 
-
             <div class="menu-section">
-                <h3>Management</h3>
-                <div class="menu-wrapper">
-                    <div class="menu-part">
-                        <div class="menu-head">
-                            <h4>Delete Account</h4>
-                            <p>Permanently delete the account.</p>
-                        </div>
-                        <div class="menu-content">
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="menu-section">
-                <h3>Debug</h3>
                 <div class="menu-wrapper">
                     <div class="menu-part">
                         <div class="menu-head">
@@ -383,7 +384,33 @@ const general_settings = {
                         </div>
                     </div>
 
+                    <div class="menu-part">
+                        <div class="menu-head">
+                            <h4>Account Creation Date</h4>
+                            <p>View when the account was created.</p>
+                        </div>
+                        <div class="menu-content">
 
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+            <div class="menu-section">
+                <h3>Danger</h3>
+                <div class="menu-wrapper">
+                    <div class="menu-part">
+                        <div class="menu-head">
+                            <h4>Delete Account</h4>
+                            <p>Permanently delete the account.</p>
+                        </div>
+                        <div class="menu-content">
+
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -411,7 +438,7 @@ const mx_overview = {
     //language=HTML
     data: `
         <div class="view-header">
-            <h1>Overview</h1><span id="syncing"><i class="gg-loadbar-alt"></i></span>
+            <h1>Loading...</h1><span id="syncing"><i class="gg-loadbar-alt"></i></span>
         </div>
         <div class="view-content">
             <div class="button" onclick="navigate('')">Return to Exchange list</div>
@@ -419,14 +446,16 @@ const mx_overview = {
     collect: [
         async function (start_time, url) {
 
-            let mx_data = await mx_overview.operations.get_mx(url.split("/")[2])
+            let domain_uuid = url.split("/")[2];
+
+            let mx_data = await mx_overview.operations.get_mx(domain_uuid)
             if (start_time < last_navigation_time) {
                 return
             }
 
             let domain = mx_data["domain"]
             document.title = `${domain} - PostAgent`
-            //document.getElementsByTagName("h1")[0].innerHTML = `${domain}<span>/</span>Overview`
+            document.getElementsByTagName("h1")[0].innerHTML = `<a onclick="navigate('mx/${domain_uuid}/overview')">${domain}</a><span>/</span>Overview`
             e("syncing").style.opacity = "0";
         }
     ],
