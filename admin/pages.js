@@ -318,12 +318,13 @@ const general_settings = {
                 <div class="menu-wrapper">
                     <div class="menu-part">
                         <div class="menu-head">
-                            <h4>Name</h4>
-                            <p>The name others see you as in a team.</p>
+                            <h4>Display Name</h4>
+                            <p>An optional name shown to others in a shared resource.</p>
                         </div>
                         <div class="menu-content">
-                            <input>
-                            <div class="input-desc"></div>
+                            <input placeholder="Enter your name" name="name" type="text">
+                            <div class="input-desc">Others will see you as this name. Only for display purposes and not tied to billing settings.</div>
+                        <div class="button" onclick="general_settings.operations.set_name(this)">Update</div> 
                         </div>
                     </div>
 
@@ -342,16 +343,6 @@ const general_settings = {
                         <div class="menu-head">
                             <h4>Password</h4>
                             <p>Update the account password.</p>
-                        </div>
-                        <div class="menu-content">
-
-                        </div>
-                    </div>
-
-                    <div class="menu-part">
-                        <div class="menu-head">
-                            <h4>Timezone</h4>
-                            <p>Set the timezone to be used to display timestamps.</p>
                         </div>
                         <div class="menu-content">
 
@@ -421,15 +412,78 @@ const general_settings = {
         async function (start_time, url) {
 
             [].forEach.call(document.getElementsByClassName("menu-head"), function (el) {
-                el.insertAdjacentHTML("beforeend", `<div class="settings-expand">Expand</div>`);
+                el.insertAdjacentHTML("beforeend", `<div class="settings-expand" style="top: ${(el.clientHeight/2) - 15 }px" onclick="general_settings.operations.toggle_field(this)">open</div>`);
+                let menu_block = el.parentNode;
+                let block_height = menu_block.offsetHeight;
+                menu_block.setAttribute("data-initHeight", block_height)
+
+                menu_block.style.height = `${el.offsetHeight}px`;
             })
 
+            let settings = await general_settings.operations.get_user_settings()
+            if (start_time < last_navigation_time) {
+                return
+            }
+            e("syncing").style.opacity = "0";
+
+
+            document.getElementsByName("name")[0].value = settings.name
         }
     ],
     operations: {
-        get_user_settings: async function get_mx(get_user_settings) {
-            return await get(API_URL + `/account/settings`)
+        get_user_settings: async function () {
+            return await get(API_URL + `/account/settings/general`)
         },
+        set_name: async function (self) {
+            self.innerHTML = "Pending..."
+            let menu_content = self.parentNode;
+            let menu_block = menu_content.parentNode;
+
+            if(menu_block.querySelector(".error-notif")) {
+                menu_block.querySelector(".error-notif").remove()
+            }
+
+            let name = document.getElementsByName("name")[0].value;
+            if (name.length === 0) {
+                self.insertAdjacentHTML("afterend", `<div class="error-notif">Name cannot be empty</div>`)
+                return
+            }
+            let obj = {
+                "name": name
+            }
+            document.getElementsByName("name")
+            let resp = await post(API_URL + `/account/settings/general`, obj)
+            menu_block.querySelector(".button").innerHTML = "Update"
+            if (resp.err) {
+                self.insertAdjacentHTML("afterend", `<div class="error-notif">${resp.err}</div>`)
+                return
+            }
+            general_settings.operations.close_field(self, menu_block.querySelector(".menu-head"), menu_block)
+        },
+        toggle_field: function (self) {
+            let menu_head = self.parentNode;
+            let menu_block = menu_head.parentNode
+            if (menu_head.clientHeight === menu_block.clientHeight) {
+                general_settings.operations.expand_field(self, menu_head, menu_block)
+            } else {
+                general_settings.operations.close_field(self, menu_head, menu_block)
+            }
+        },
+        expand_field: function (self, menu_head, menu_block) {
+            menu_block.style.height = `${menu_block.getAttribute("data-initHeight")}px`;
+            menu_block.style.background = "#1a1a1a"
+            menu_head.querySelector(".settings-expand").innerHTML = "close";
+            menu_head.style.marginTop = "12px"
+        },
+        close_field: function(self, menu_head, menu_block) {
+            menu_block.style.removeProperty("background")
+            menu_head.style.removeProperty("margin-top")
+            menu_block.style.height = `${menu_head.clientHeight}px`;
+            if(menu_block.querySelector(".error-notif")) {
+                menu_block.querySelector(".error-notif").remove()
+            }
+            menu_head.querySelector(".settings-expand").innerHTML = "open";
+        }
     }
 }
 

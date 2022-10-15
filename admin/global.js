@@ -1,4 +1,4 @@
-const API_URL = 'http://10.0.0.26:3030';
+const API_URL = 'http://localhost:3030';
 
 let last_navigation_time = new Date();
 
@@ -32,12 +32,20 @@ async function post(url = '', data = {}) {
     })
     .catch((error) => {
         console.error('Error:', error);
+        return {err: error}
     });
 
     if (response.status === 401) {
         logout(true)
     }
-    return response.json()
+
+    let resp = await response.json()
+console.log(resp)
+    if (response.status !== 200) {
+        console.error('Error:', response);
+        return {err: response.status + ": " + resp["message"]}
+    }
+    return resp
 }
 
 async function get(url = '') {
@@ -50,15 +58,22 @@ async function get(url = '') {
             'Account-Id': localStorage.getItem('account_id'),
         }
     })
-    .catch((error) => {
-        console.log('Error:', error);
-    });
+        .catch((error) => {
+            console.error('Error:', error);
+        });
 
     if (response.status === 401) {
         console.log(response.status)
         logout(true)
     }
-    return response.json()
+
+    let resp = response.json()
+
+    if (response.status !== 200) {
+        console.error('Error:', response);
+        return {err: response.status + ": " + resp["message"]}
+    }
+    return resp
 }
 
 function logout(do_not_make_logout_rx_to_api) {

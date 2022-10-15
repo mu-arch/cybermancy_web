@@ -226,6 +226,7 @@ a:visited {
     position: relative;
     top: -2px;
     display: inline-block;
+    user-select: none;
 }
 
 h1 {
@@ -502,19 +503,20 @@ h1 a:hover {
 
 .menu-part {
     position: relative;
-    height: 73px;
     overflow: hidden;
-    background-color: #181818;
+    background-color: #1f1f1f;
     padding: 0 20px;
+    transition: all 300ms;
 }
 
 .menu-part:not(:last-child) {
-    border-bottom: 1px solid #1c1c1c;
+    margin-bottom: 1px;
 }
 
 .menu-head {
-    padding: 16px 0 15px 0;
+    padding: 18px 0;
     user-select: none;
+    transition: all 300ms;
 }
 
 .menu-part h4 {
@@ -526,14 +528,69 @@ h1 a:hover {
 .menu-head p {
     max-width: 500px;
     line-height: 22px;
-    color: rgba(255, 255, 255, 0.55);
+    color: rgba(255, 255, 255, 0.60);
+}
+
+.menu-content {
+    padding:10px 0 40px 0;
+}
+
+
+.menu-content input[type=range]::-moz-focus-outer {
+    border: 0;
+}
+
+.menu-content input[type=text], input[type=password] {
+    width: 100%;
+    padding: 14px 20px 12px 20px;
+    background: #212121;
+    border: 1px solid #333333;
+    border-radius: 4px;
+    font-weight: 500;
+    box-sizing: border-box;
+    font-size: 14px;
+    color: #fff;
+}
+
+.menu-content input[type=text]:hover, input[type=password]:hover {
+    border: 1px solid #626262;
+}
+
+.menu-content input[type=text]:focus, input[type=password]:focus {
+    border: 2px solid rgb(0, 118, 255);
+    background: #171717;
+    padding: 13px 20px 11px 19px;
+    outline: 0;
+    box-shadow: none;
+}
+
+.input-desc {
+    color: rgba(255, 255, 255, 0.56);
+    padding: 12px 0;
+}
+
+.menu-content .button {
+    margin-top: 20px;
+    display: inline-block;
+    transition: scale 100ms ease-out;
+}
+
+.menu-content .button:active {
+    scale: .9;
+    transition: 0ms;
+}
+
+.error-notif {
+    display: inline-block;
+    padding-left: 20px;
+    color:red;
 }
 
 .settings-expand {
     position: absolute;
-    top: 23px;
     right: 20px;
-    padding: 8px 8px 8px 10px;
+    padding: 0 12px;
+    line-height: 30px;
     background: rgba(89, 89, 89, 0.47);
     border-radius: 2px;
     text-transform: uppercase;
@@ -576,7 +633,8 @@ h1 a:hover {
 .settings-option {
     width: 200px;
     padding: 15px 15px;
-    border: 2px solid #333;
+    border: 2px solid #232323;
+    background-color: #232323;
     border-radius: 5px;
     margin: 20px 20px 0 0;
     cursor: pointer;
@@ -594,7 +652,7 @@ h1 a:hover {
 
 .settings-option p {
     font-size: 11px;
-    color: #a1a1a1;
+    color: #b0b0b0;
     line-height: 15px;
     font-weight:500;
 }
