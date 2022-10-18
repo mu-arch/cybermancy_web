@@ -324,7 +324,7 @@ const general_settings = {
                         <div class="menu-content">
                             <input placeholder="Enter your name" name="name" type="text">
                             <div class="input-desc">Others will see you as this name. Only for display purposes and not tied to billing settings.</div>
-                        <div class="button" onclick="general_settings.operations.set_name(this)">Update</div> 
+                        <div class="button" onmousedown="general_settings.operations.set_name(this)">Update</div> 
                         </div>
                     </div>
 
@@ -345,7 +345,13 @@ const general_settings = {
                             <p>Update the account password.</p>
                         </div>
                         <div class="menu-content">
-
+                            <input placeholder="Current password" name="old_password" type="text">
+                            <br><br>
+                            <input placeholder="New password" name="new_password" type="text">
+                            <br><br>
+                            <input placeholder="Repeat new password" name="new_password_repeat" type="text">
+                            <div class="input-desc">Upon update you will automatically be logged out of all devices.</div>
+                            <div class="button" onmousedown="general_settings.operations.update_password(this)">Update</div>
                         </div>
                     </div>
 
@@ -356,22 +362,26 @@ const general_settings = {
                 <div class="menu-wrapper">
                     <div class="menu-part">
                         <div class="menu-head">
-                            <h4>Account UUID</h4>
+                            <h4>Account Identifier</h4>
                             <p>View the account identifier.</p>
                         </div>
                         <div class="menu-content">
-
+                            <input id="data-account-id" disabled type="text">
                         </div>
                     </div>
 
 
                     <div class="menu-part">
                         <div class="menu-head">
-                            <h4>Session Token</h4>
-                            <p>View the session token.</p>
+                            <h4>Browser Session</h4>
+                            <p>View the session key.</p>
                         </div>
                         <div class="menu-content">
-
+                            <input id="data-session" disabled type="text">
+                            <div class="input-desc">This browser's session.</div>
+                            <br>
+                            <input id="data-session-created" disabled type="text">
+                            <div class="input-desc">Creation time.</div>
                         </div>
                     </div>
 
@@ -381,7 +391,7 @@ const general_settings = {
                             <p>View when the account was created.</p>
                         </div>
                         <div class="menu-content">
-
+                            <input id="data-created-date" disabled type="text">
                         </div>
                     </div>
 
@@ -412,7 +422,7 @@ const general_settings = {
         async function (start_time, url) {
 
             [].forEach.call(document.getElementsByClassName("menu-head"), function (el) {
-                el.insertAdjacentHTML("beforeend", `<div class="settings-expand" style="top: ${(el.clientHeight/2) - 15 }px" onclick="general_settings.operations.toggle_field(this)">open</div>`);
+                el.insertAdjacentHTML("beforeend", `<div class="settings-expand" style="top: ${(el.clientHeight/2) - 15 }px" onmousedown="general_settings.operations.toggle_field(this)">open</div>`);
                 let menu_block = el.parentNode;
                 let block_height = menu_block.offsetHeight;
                 menu_block.setAttribute("data-initHeight", block_height)
@@ -426,8 +436,13 @@ const general_settings = {
             }
             e("syncing").style.opacity = "0";
 
+            e("data-account-id").value = localStorage.getItem("account_id");
+            e("data-session").value = localStorage.getItem("session");
+            e("data-session-created").value = localStorage.getItem("session_created_at");
+
 
             document.getElementsByName("name")[0].value = settings.name
+            e("data-created-date").value = settings.created_at;
         }
     ],
     operations: {
@@ -439,26 +454,39 @@ const general_settings = {
             let menu_content = self.parentNode;
             let menu_block = menu_content.parentNode;
 
-            if(menu_block.querySelector(".error-notif")) {
-                menu_block.querySelector(".error-notif").remove()
+            let obj = {
+                "name": document.getElementsByName("name")[0].value
             }
 
-            let name = document.getElementsByName("name")[0].value;
-            if (name.length === 0) {
-                self.insertAdjacentHTML("afterend", `<div class="error-notif">Name cannot be empty</div>`)
-                return
-            }
-            let obj = {
-                "name": name
-            }
-            document.getElementsByName("name")
             let resp = await post(API_URL + `/account/settings/general`, obj)
             menu_block.querySelector(".button").innerHTML = "Update"
             if (resp.err) {
-                self.insertAdjacentHTML("afterend", `<div class="error-notif">${resp.err}</div>`)
                 return
             }
             general_settings.operations.close_field(self, menu_block.querySelector(".menu-head"), menu_block)
+            notyf.success('Update accepted.');
+        },
+        update_password: async function(self) {
+            let menu_content = self.parentNode;
+            let menu_block = menu_content.parentNode;
+
+            if(document.getElementsByName("new_password")[0].value !== document.getElementsByName("new_password_repeat")[0].value) {
+                notyf.error('Passwords do not match. Try again.');
+                return
+            }
+
+            let obj = {
+                "old_password": document.getElementsByName("old_password")[0].value,
+                "new_password": document.getElementsByName("new_password")[0].value
+            }
+
+            self.innerHTML = "Pending..."
+            let resp = await post(API_URL + `/account/settings/password`, obj)
+            menu_block.querySelector(".button").innerHTML = "Update"
+            if (resp.err) {
+                return
+            }
+            logout(true)
         },
         toggle_field: function (self) {
             let menu_head = self.parentNode;
@@ -470,7 +498,7 @@ const general_settings = {
             }
         },
         expand_field: function (self, menu_head, menu_block) {
-            menu_block.style.height = `${menu_block.getAttribute("data-initHeight")}px`;
+            menu_block.style.height = `${parseInt(menu_block.getAttribute("data-initHeight")) + 12}px`;
             menu_block.style.background = "#1a1a1a"
             menu_head.querySelector(".settings-expand").innerHTML = "close";
             menu_head.style.marginTop = "12px"
@@ -479,9 +507,6 @@ const general_settings = {
             menu_block.style.removeProperty("background")
             menu_head.style.removeProperty("margin-top")
             menu_block.style.height = `${menu_head.clientHeight}px`;
-            if(menu_block.querySelector(".error-notif")) {
-                menu_block.querySelector(".error-notif").remove()
-            }
             menu_head.querySelector(".settings-expand").innerHTML = "open";
         }
     }

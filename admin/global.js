@@ -2,6 +2,31 @@ const API_URL = 'http://localhost:3030';
 
 let last_navigation_time = new Date();
 
+const notyf = new Notyf({
+    duration: 1500,
+    position: {
+        x: 'center',
+        y: 'top',
+    },
+    types: [
+        {
+            type: 'warning',
+            background: 'orange',
+            icon: {
+                className: 'material-icons',
+                tagName: 'i',
+                text: 'warning'
+            }
+        },
+        {
+            type: 'error',
+            background: 'red',
+            duration: 10000,
+            dismissible: true
+        }
+    ]
+});
+
 function e(e) {
     return document.getElementById(e);
 }
@@ -39,13 +64,22 @@ async function post(url = '', data = {}) {
         logout(true)
     }
 
-    let resp = await response.json()
-console.log(resp)
     if (response.status !== 200) {
         console.error('Error:', response);
-        return {err: response.status + ": " + resp["message"]}
+
+        let resp = {}
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.indexOf("application/json") !== -1) {
+            resp = await response.json();
+        }
+        if (resp["message"]) {
+            notyf.error(resp["message"]);
+        } else {
+            notyf.error("HTTP Status: " + response.status);
+        }
+        return {err: response.status}
     }
-    return resp
+    return await response.json()
 }
 
 async function get(url = '') {
