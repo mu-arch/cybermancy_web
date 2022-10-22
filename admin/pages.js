@@ -263,7 +263,7 @@ let account_menu = {
 
 const account = {
     title: "Account",
-    sidebar: "generic",
+    sidebar: "account-settings",
     //language=HTML
     data: `
         <div class="view-header">
@@ -314,6 +314,7 @@ const account = {
 
 const general_settings = {
     title: "Account General",
+    sidebar: "account-settings",
     //language=HTML
     data: `
         <div class="view-header">
