@@ -586,18 +586,245 @@ const mx_overview = {
 }
 
 const mx_dns = {
-    title: "Exchange",
+    title: "DNS Configuration",
     sidebar: "postagent-exchange",
     //language=HTML
     data: `
         <div class="view-header">
-            <h1>Loading...</h1><span id="syncing"><i class="gg-loadbar-alt"></i></span>
-            <p>Emails are routed over the internet using records stored in the DNS system. This page explains how to map your domain's MX records to our servers, so we can begin coordinating email traffic on your behalf.</p>
-            <p>To do so, you'll need to update your DNS settings through your domain's registrar to the values we provide below.</p>
+            <h1>DNS Configuration</h1><span id="syncing"><i class="gg-loadbar-alt"></i></span>
+            <p>Emails are routed over the internet using records stored in the DNS system. This page explains how to map
+                your domain's MX records to our servers, so we can begin coordinating email traffic on your behalf.</p>
+            <p>To do so, you'll need to update your DNS settings through your domain's registrar to the values we
+                provide below.</p>
         </div>
         <div class="view-content">
-            <div class="button" onclick="navigate('')">Return to Exchange list</div>
-        </div>`,
+            <div class="page-group">
+                <h2>1. Add basic records (required):</h2>
+                <table>
+                    <colgroup>
+                        <col span="1" style="width: 40px;">
+                        <col span="1" style="width: 90px;">
+                        <col span="1" style="width: 70px;">
+                        <col span="1" style="width: 40px;">
+                    </colgroup>
+                    <tbody id="table-body">
+                    <tr>
+                        <th>type</th>
+                        <th>hostname</th>
+                        <th>required value</th>
+                        <th>status</th>
+                    </tr>
+                    <tr>
+                        <td>txt</td>
+                        <td>?</td>
+                        <td>
+                            <div class="field">v=spf1 include:postagent.cybermancy.org ~all</div>
+                        </td>
+                        <td>
+                            <div class="high-vis invalid">?</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>txt</td>
+                        <td>?</td>
+                        <td>
+                            <div class="field">?</div>
+                        </td>
+                        <td>
+                            <div class="high-vis invalid">?</div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+
+                <h3>What do these records do?</h3>
+
+                <p>Recipient mail servers use these records to verify mail is actually coming from who it claims to be
+                    from.
+                    Their technical names are SPF and DKIM.</p>
+
+                <p>SPF stands for "Sender Policy Framework" an anti-forgery system that ensures to the recipient mail
+                    server
+                    that PostAgent's IP is allowed to send on behalf of your domain.</p>
+
+                <p>DKIM stands for "DomainKeys Identified Mail" a cryptographic signature based anti-forgery system that
+                    allows recipient servers to (1) verify an email's "from" address is not spoofed and (2) ensure mail
+                    content was not altered in transit. DKIM does NOT encrypt your emails (that's SSL).
+                    Note: Your registrar may split the long DKIM key into two records. This is normal.</p>
+            </div>
+
+            <div class="page-group">
+                <h2>2. Add MX records to receive mail (optional):</h2>
+
+                <table>
+                    <colgroup>
+                        <col span="1" style="width: 40px;">
+                        <col span="1" style="width: 90px;">
+                        <col span="1" style="width: 70px;">
+                        <col span="1" style="width: 40px;">
+                    </colgroup>
+                    <tbody id="table-body">
+                    <tr>
+                        <th>type</th>
+                        <th>hostname</th>
+                        <th>required value</th>
+                        <th>status</th>
+                    </tr>
+                    <tr>
+                        <td>mx</td>
+                        <td>?</td>
+                        <td>
+                            <div class="field">10 mxa.postagent.cybermancy.org.</div>
+                        </td>
+                        <td>
+                            <div class="high-vis invalid">?</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>mx</td>
+                        <td>?</td>
+                        <td>
+                            <div class="field">20 mxb.postagent.cybermancy.org.</div>
+                        </td>
+                        <td>
+                            <div class="high-vis invalid">?</div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <h3>Just to clarify:</h3>
+
+                <p>The values listed above are in BIND format. Your registrar may require you to enter them differently.
+                    The number before the required value represents the "priority" of the MX server. Some registrars may
+                    exclude the trailing "." while others will require it.
+                    Make sure PostAgent's MX records are the only MX records for this specific domain or sub-domain.</p>
+            </div>
+            <div class="page-group">
+                <h2>3. Add a CNAME record to track unsubscribes, opens, & clicks (optional)</h2>
+                <table>
+                    <colgroup>
+                        <col span="1" style="width: 40px;">
+                        <col span="1" style="width: 90px;">
+                        <col span="1" style="width: 70px;">
+                        <col span="1" style="width: 40px;">
+                    </colgroup>
+                    <tbody id="table-body">
+                    <tr>
+                        <th>type</th>
+                        <th>hostname</th>
+                        <th>required value</th>
+                        <th>status</th>
+                    </tr>
+                    <tr>
+                        <td>cname</td>
+                        <td>wo8vy2th.domain.com</td>
+                        <td>
+                            <div class="field">10 mxa.postagent.cybermancy.org.</div>
+                        </td>
+                        <td>
+                            <div class="high-vis invalid">?</div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <h3>What's next?</h3>
+
+                <p>Typically DNS settings propagate within an hour, but in some cases it can take over 24 hours.</p>
+
+            </div>
+        </div>
+        <style>
+
+            .page-group {
+                padding: 20px 0 60px 0;
+            }
+
+            .page-group p {
+                max-width: 650px;
+                padding: 10px 0;
+                font-size: 13px;
+                line-height: 20px;
+                color: #838383;
+            }
+
+            table {
+                margin: 30px 0 40px 0;
+            }
+
+            .view-content th {
+                text-transform: uppercase;
+                font-size: 11px;
+                text-align: left;
+                font-weight: 500;
+                border-bottom: 1px solid #494949;
+                padding-bottom: 15px;
+            }
+
+            .view-content td {
+                padding: 40px 0;
+                border-bottom: 1px solid #2d2d2d;
+                line-height: 0;
+            }
+
+            .message-only {
+                background: none !important;
+            }
+
+            .message-only td {
+                cursor: default;
+            }
+
+            .view-content td:first-child {
+                font-family: monospace;
+                text-transform: uppercase;
+                font-weight: 700;
+            }
+
+            .view-content td:nth-child(2) {
+                font-size: 13px
+            }
+
+            .field {
+                font-family: monospace;
+                padding: 10px;
+                display: inline;
+                border: 1px solid #5d5d5d;
+                background: #232323;
+                border-radius: 6px;
+            }
+
+            .number {
+                font-family: monospace;
+            }
+
+            .bold {
+                text-transform: uppercase;
+                font-weight: 600;
+                font-size: 11px;
+            }
+
+            .high-vis {
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                display: inline;
+                padding: 3px 8px;
+                font-weight: 600;
+                font-size: 11px;
+                border-radius: 5px;
+            }
+
+            .valid {
+                background-color: rgba(34, 255, 0, .2);
+                color: rgb(34, 255, 0);
+            }
+
+            .invalid {
+                background-color: rgba(255, 0, 0, 0.2);
+                color: rgb(255, 0, 0);
+            }</style>`,
     collect: [
         async function (start_time, url) {
             let domain_uuid = url.split("/")[2];
@@ -608,8 +835,6 @@ const mx_dns = {
             }
 
             let domain = mx_data["domain"]
-            document.title = `${domain} - PostAgent`
-            document.getElementsByTagName("h1")[0].innerHTML = `<a onclick="navigate('mx/${domain_uuid}/overview')">${domain}</a><span>/</span>DNS`
             e("syncing").style.opacity = "0";
         }
     ],

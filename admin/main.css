@@ -59,6 +59,16 @@ body {
     flex-direction: row;
 }
 
+h2 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+h3 {
+    font-weight: 600;
+    padding-bottom: 12px;
+}
+
 a {
     all: unset;
     box-sizing: border-box;
