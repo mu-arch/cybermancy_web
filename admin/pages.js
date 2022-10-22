@@ -592,7 +592,8 @@ const mx_dns = {
     data: `
         <div class="view-header">
             <h1>Loading...</h1><span id="syncing"><i class="gg-loadbar-alt"></i></span>
-            <p>Let's get your domain configured to route mail through PostAgent. To do so, you'll need to update your DNS settings through your domain's registrar to the values we provide below.</p>
+            <p>Emails are routed over the internet using records stored in the DNS system. This page explains how to map your domain's MX records to our servers, so we can begin coordinating email traffic on your behalf.</p>
+            <p>To do so, you'll need to update your DNS settings through your domain's registrar to the values we provide below.</p>
         </div>
         <div class="view-content">
             <div class="button" onclick="navigate('')">Return to Exchange list</div>
