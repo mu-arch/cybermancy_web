@@ -222,12 +222,12 @@ function navigate(route) {
 
 function generateSidebar(sidebar_ref) {
 
-    if (sidebar_ref) {
-
-    }
-
     e('sidebar-container').innerHTML = sidebar.data;
     e('email-slot').innerHTML = localStorage.getItem("email");
+
+    if (sidebar_ref) {
+        e('sidebar-links').innerHTML = sidebar.links[sidebar_ref]
+    }
 
 }
 

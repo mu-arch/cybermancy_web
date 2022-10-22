@@ -1,3 +1,50 @@
+//sidebars
+
+const sidebar = {
+    //language=HTML
+    data: `
+        <div class="sidebar">
+            <a onclick="navigate('')">
+                <div class="logo"></div>
+                <div class="logo-text">MQ</div>
+            </a>
+            <div id="sidebar-links">
+
+            </div>
+            <div class="account"
+                 onmousedown="openControlMenu(this, account_menu, 0, 0, 'left','bottom', 269, 134.5, 0)">
+                <div class="profile-icon">
+                    <div class="icon-pacman" style="width: 18px; height: 18px;margin: 9px;filter:invert(100%)"></div>
+                </div>
+                <div id="email-slot" class="email">unknown</div>
+                <div class="icon-expand nav-icon"></div>
+            </div>
+        </div>`,
+    links: {
+        //language=HTML
+        account: `
+            <div class="sidebar-header">Settings</div>
+            <div class="sidebar-item">
+                <div class="sidebar-icon"></div>
+                <div class="sidebar-text">General</div>
+            </div>
+            <div class="sidebar-item">
+                <div class="sidebar-icon"></div>
+                <div class="sidebar-text"></div>
+            </div>
+            <div class="sidebar-header">Records</div>
+            <div class="sidebar-item">
+                <div class="sidebar-icon"></div>
+                <div class="sidebar-text">Billing</div>
+            </div>
+            <div class="sidebar-item">
+                <div class="sidebar-icon"></div>
+                <div class="sidebar-text">Activity</div>
+            </div>`
+    }
+}
+
+//main content
 const not_found = {
     title: "Page not found",
     //language=HTML
@@ -233,28 +280,6 @@ let mx_new = {
     }
 }
 
-const sidebar = {
-    //language=HTML
-    data: `
-        <div class="sidebar">
-            <a onclick="navigate('')">
-                <div class="logo"></div>
-                <div class="logo-text">MQ</div>
-            </a>
-            <div id="sidebar-links">
-                
-            </div>
-            <div class="account"
-                 onmousedown="openControlMenu(this, account_menu, 0, 0, 'left','bottom', 269, 134.5, 0)">
-                <div class="profile-icon">
-                    <div class="icon-pacman" style="width: 18px; height: 18px;margin: 9px;filter:invert(100%)"></div>
-                </div>
-                <div id="email-slot" class="email">unknown</div>
-                <div class="icon-expand nav-icon"></div>
-            </div>
-        </div>`
-}
-
 let account_menu = {
     data: `<h3>Account Menu</h3>
 <div class="account-menu"><div onclick="navigate('account'); closeControlModal()"><span class="icon-settings account-icon"></span>Account</div>
@@ -263,7 +288,7 @@ let account_menu = {
 
 const account = {
     title: "Account",
-    sidebar: "account-settings",
+    sidebar: "account",
     //language=HTML
     data: `
         <div class="view-header">
@@ -296,8 +321,8 @@ const account = {
                         <p>View the billing history for all wallets.</p>
                     </div>
                     <div class="settings-option">
-                        <h3>Login History</h3>
-                        <p>View the login history.</p>
+                        <h3>Activity</h3>
+                        <p>View account activity.</p>
                     </div>
                 </div>
             </div>
@@ -314,7 +339,7 @@ const account = {
 
 const general_settings = {
     title: "Account General",
-    sidebar: "account-settings",
+    sidebar: "account",
     //language=HTML
     data: `
         <div class="view-header">
@@ -528,6 +553,7 @@ const general_settings = {
 
 const mx_overview = {
     title: "Exchange",
+    sidebar: "postagent-exchange",
     //language=HTML
     data: `
         <div class="view-header">
@@ -568,8 +594,10 @@ const account_login = {
             <h1>Welcome,</h1>
             <p class="desc">Login to continue or <a class="link" onclick="navigate('account/create')">Sign up</a></p>
             <div class="account-form">
-                <input type="text" name="email" placeholder="Email" onkeydown="account_login.operations.listen_enter(event)">
-                <input type="password" name="password" placeholder="Password" onkeydown="account_login.operations.listen_enter(event)">
+                <input type="text" name="email" placeholder="Email"
+                       onkeydown="account_login.operations.listen_enter(event)">
+                <input type="password" name="password" placeholder="Password"
+                       onkeydown="account_login.operations.listen_enter(event)">
                 <div id="login-submit" class="submit" onclick="account_login.operations.login()">Login</div>
             </div>
             <div class="hr"></div>
@@ -630,7 +658,7 @@ const account_create = {
     operations: {
         create: async function () {
             e("login-submit").innerText = "Please wait..."
-            if(account_create.operations.isEmail(n('email')[0].value) === false) {
+            if (account_create.operations.isEmail(n('email')[0].value) === false) {
                 notyf.error('Email field is not valid.');
                 return
             }
@@ -652,7 +680,7 @@ const account_create = {
             await account_login.operations.login()
         },
         isEmail: function (email) {
-            return /^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*$/.test( email );
+            return /^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*$/.test(email);
         }
     }
 }
