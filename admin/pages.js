@@ -15,6 +15,7 @@ const not_found = {
 
 const mxs_list_overview = {
     title: "Mail Exchanges",
+    sidebar: "postagent_general",
     //language=HTML
     data: `
         <div class="view-header">
@@ -135,16 +136,12 @@ const mxs_list_overview = {
                 ls_mxs = JSON.parse(ls_mxs)
                 mxs_list_overview.operations.insert_mxs(ls_mxs)
             } else {
-                e("table-body").insertAdjacentHTML("beforeend", `<tr id="loading"><td style="border-bottom: none"><div class="load-2"><div class="line"></div><div class="line"></div><div class="line"></div></div></td></tr>`);
+                e("table-body").insertAdjacentHTML("beforeend", `<tr style="background: none"><td style="border-bottom: none"><div class="load-2"><div class="line"></div><div class="line"></div><div class="line"></div></div></td></tr>`);
             }
 
             let mxs = await mxs_list_overview.operations.get_list()
             if (start_time < last_navigation_time) {
                 return
-            }
-
-            if (e("loading")) {
-                e("loading").remove();
             }
 
             if (ls_mxs !== mxs) {
@@ -242,8 +239,11 @@ const sidebar = {
         <div class="sidebar">
             <a onclick="navigate('')">
                 <div class="logo"></div>
-                <div class="logo-text">PostAgent</div>
+                <div class="logo-text">MQ</div>
             </a>
+            <div id="sidebar-links">
+                
+            </div>
             <div class="account"
                  onmousedown="openControlMenu(this, account_menu, 0, 0, 'left','bottom', 269, 134.5, 0)">
                 <div class="profile-icon">
@@ -258,11 +258,12 @@ const sidebar = {
 let account_menu = {
     data: `<h3>Account Menu</h3>
 <div class="account-menu"><div onclick="navigate('account'); closeControlModal()"><span class="icon-settings account-icon"></span>Account</div>
-<div onclick="logout()" style="margin-bottom: 50px;"><span class="icon-bowl account-icon"></span>Logout</div></div>`
+<div onclick="logout(); closeControlModal()" style="margin-bottom: 50px;"><span class="icon-bowl account-icon"></span>Logout</div></div>`
 }
 
 const account = {
     title: "Account",
+    sidebar: "generic",
     //language=HTML
     data: `
         <div class="view-header">
@@ -270,7 +271,7 @@ const account = {
             <p>Here you can manage your billing and account settings globally across Cybermancy services.</p>
         </div>
         <div class="view-content">
-            
+
             <div class="settings-category">
                 <h2>User</h2>
                 <div class="settings-category-items">
@@ -279,22 +280,29 @@ const account = {
                         <p>General settings for your user account.</p>
                     </div>
                     <div class="settings-option">
-                        <h3>Login History</h3>
-                        <p>View the login history.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="settings-category">
-                <h2>Billing</h2>
-                <div class="settings-category-items">
-                    <div class="settings-option">
                         <h3>Wallets</h3>
                         <p>Create & view connected bank accounts.</p>
                     </div>
                 </div>
             </div>
-            
+
+            <div class="settings-category">
+                <h2>Records</h2>
+
+                <div class="settings-category-items">
+
+                    <div class="settings-option">
+                        <h3>Billing History</h3>
+                        <p>View the billing history for all wallets.</p>
+                    </div>
+                    <div class="settings-option">
+                        <h3>Login History</h3>
+                        <p>View the login history.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         </div>`,
     collect: [
         async function (start_time, url) {
@@ -309,7 +317,8 @@ const general_settings = {
     //language=HTML
     data: `
         <div class="view-header">
-            <h1><a onclick="navigate('account')">Account</a><span>/</span>General</h1><span id="syncing"><i class="gg-loadbar-alt"></i></span>
+            <h1><a onclick="navigate('account')">Account</a><span>/</span>General</h1><span id="syncing"><i
+                class="gg-loadbar-alt"></i></span>
             <p>General settings related to your account.</p>
         </div>
         <div class="view-content">
@@ -323,8 +332,10 @@ const general_settings = {
                         </div>
                         <div class="menu-content">
                             <input placeholder="Enter your name" name="name" type="text">
-                            <div class="input-desc">Others will see you as this name. Only for display purposes and not tied to billing settings.</div>
-                        <div class="button" onmousedown="general_settings.operations.set_name(this)">Update</div> 
+                            <div class="input-desc">Others will see you as this name. Only for display purposes and not
+                                tied to billing settings.
+                            </div>
+                            <div class="button" onmousedown="general_settings.operations.set_name(this)">Update</div>
                         </div>
                     </div>
 
@@ -350,8 +361,10 @@ const general_settings = {
                             <input placeholder="New password" name="new_password" type="text">
                             <br><br>
                             <input placeholder="Repeat new password" name="new_password_repeat" type="text">
-                            <div class="input-desc">Upon update you will automatically be logged out of all devices.</div>
-                            <div class="button" onmousedown="general_settings.operations.update_password(this)">Update</div>
+                            <div class="input-desc">Upon update you will automatically be logged out of all devices.
+                            </div>
+                            <div class="button" onmousedown="general_settings.operations.update_password(this)">Update
+                            </div>
                         </div>
                     </div>
 
@@ -422,7 +435,7 @@ const general_settings = {
         async function (start_time, url) {
 
             [].forEach.call(document.getElementsByClassName("menu-head"), function (el) {
-                el.insertAdjacentHTML("beforeend", `<div class="settings-expand" style="top: ${(el.clientHeight/2) - 15 }px" onmousedown="general_settings.operations.toggle_field(this)">open</div>`);
+                el.insertAdjacentHTML("beforeend", `<div class="settings-expand" style="top: ${(el.clientHeight / 2) - 15}px" onmousedown="general_settings.operations.toggle_field(this)">open</div>`);
                 let menu_block = el.parentNode;
                 let block_height = menu_block.offsetHeight;
                 menu_block.setAttribute("data-initHeight", block_height)
@@ -466,11 +479,11 @@ const general_settings = {
             general_settings.operations.close_field(self, menu_block.querySelector(".menu-head"), menu_block)
             notyf.success('Update accepted.');
         },
-        update_password: async function(self) {
+        update_password: async function (self) {
             let menu_content = self.parentNode;
             let menu_block = menu_content.parentNode;
 
-            if(document.getElementsByName("new_password")[0].value !== document.getElementsByName("new_password_repeat")[0].value) {
+            if (document.getElementsByName("new_password")[0].value !== document.getElementsByName("new_password_repeat")[0].value) {
                 notyf.error('Passwords do not match. Try again.');
                 return
             }
@@ -503,7 +516,7 @@ const general_settings = {
             menu_head.querySelector(".settings-expand").innerHTML = "close";
             menu_head.style.marginTop = "12px"
         },
-        close_field: function(self, menu_head, menu_block) {
+        close_field: function (self, menu_head, menu_block) {
             menu_block.style.removeProperty("background")
             menu_head.style.removeProperty("margin-top")
             menu_block.style.height = `${menu_head.clientHeight}px`;
@@ -542,5 +555,103 @@ const mx_overview = {
         get_mx: async function get_mx(uuid) {
             return await get(API_URL + `/mx/${uuid}/basic`)
         },
+    }
+}
+
+const account_login = {
+    title: "Login",
+    //language=HTML
+    data: `
+        <div class="form">
+            <div class="logo"></div>
+            <h1>Welcome,</h1>
+            <p class="desc">Login to continue or <a class="link" onclick="navigate('account/create')">Sign up</a></p>
+            <div class="account-form">
+                <input type="text" name="email" placeholder="Email" onkeydown="account_login.operations.listen_enter(event)">
+                <input type="password" name="password" placeholder="Password" onkeydown="account_login.operations.listen_enter(event)">
+                <div id="login-submit" class="submit" onclick="account_login.operations.login()">Login</div>
+            </div>
+            <div class="hr"></div>
+            <p class="forgot-email">Forgot your credentials? Click <a href="">here</a></p>
+        </div>`,
+    collect: [
+        async function (start_time, url) {
+            document.getElementsByName("email")[0].focus()
+        }
+    ],
+    operations: {
+        login: async function () {
+            e("login-submit").innerText = "Please wait..."
+            let result = await post(API_URL + `/account/login`, {
+                email: n('email')[0].value,
+                password: n('password')[0].value,
+            }, true)
+            if (result.err) {
+                e("login-submit").innerText = "Login"
+                return
+            }
+            localStorage.setItem('email', n('email')[0].value);
+            localStorage.setItem('session', result['session']);
+            localStorage.setItem('account_id', result['account_id']);
+            localStorage.setItem('session_created_at', result['session_created_at']);
+            navigate("")
+        },
+        listen_enter: function (event) {
+            if (event.key === "Enter") {
+                account_login.operations.login()
+            }
+        }
+    }
+}
+
+const account_create = {
+    title: "Join",
+    //language=HTML
+    data: `
+        <div class="form">
+            <div class="logo"></div>
+            <h1>Join us,</h1>
+            <p class="desc">Already signed up? <a class="link" onclick="navigate('account/login')">Login</a></p>
+            <div class="account-form">
+                <input autocomplete="off" type="text" name="email" placeholder="Email">
+                <input autocomplete="off" type="password" name="password" placeholder="Password">
+                <input autocomplete="off" type="password" name="password2" placeholder="Repeat Password">
+                <div id="login-submit" class="submit" onclick="account_create.operations.create()">Sign up</div>
+            </div>
+            <div class="hr"></div>
+            <p class="forgot-email">Your email is not shared, and we don't send marketing.</p>
+        </div>`,
+    collect: [
+        async function (start_time, url) {
+            document.getElementsByName("email")[0].focus()
+        }
+    ],
+    operations: {
+        create: async function () {
+            e("login-submit").innerText = "Please wait..."
+            if(account_create.operations.isEmail(n('email')[0].value) === false) {
+                notyf.error('Email field is not valid.');
+                return
+            }
+
+            if (n('password')[0].value !== n('password2')[0].value) {
+                notyf.error('Passwords do not match.');
+                return
+            }
+
+            let result = await post(API_URL + `/account/create`, {
+                email: n('email')[0].value,
+                password: n('password')[0].value,
+            }, true)
+            if (result.err) {
+                e("login-submit").innerText = "Join us"
+                return
+            }
+            notyf.success('Account created! Logging in...');
+            await account_login.operations.login()
+        },
+        isEmail: function (email) {
+            return /^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*$/.test( email );
+        }
     }
 }

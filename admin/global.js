@@ -1,3 +1,5 @@
+"use strict";
+
 const API_URL = 'http://localhost:3030';
 
 let last_navigation_time = new Date();
@@ -13,10 +15,9 @@ const notyf = new Notyf({
             type: 'warning',
             background: 'orange',
             icon: {
-                className: 'material-icons',
-                tagName: 'i',
-                text: 'warning'
-            }
+                className: 'notyf__icon--error',
+            },
+            duration: 5000,
         },
         {
             type: 'error',
@@ -31,6 +32,10 @@ function e(e) {
     return document.getElementById(e);
 }
 
+function n(n) {
+    return document.getElementsByName(n)
+}
+
 let last_rate_limit_time = 0;
 function rate_limit(fn) {
     let current_time = Date.now();
@@ -41,19 +46,21 @@ function rate_limit(fn) {
     fn();
 }
 
-async function post(url = '', data = {}) {
+async function post(url = '', data = {}, noheaders) {
     let current_nav_time = last_navigation_time
-    // Default options are marked with *
-    const response = await fetch(url, {
-        method: 'POST', // *GET, POST, PUT, DELETE, etc.
-        mode: 'cors', // no-cors, *cors, same-origin
-        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-        headers: {
+    let headers = {
             'Content-Type': 'application/json',
-            'Authorization': localStorage.getItem('session'),
-            'Account-Id': localStorage.getItem('account_id'),
-        },
-        body: JSON.stringify(data) // body data type must match "Content-Type" header
+        };
+    if (!noheaders) {
+        headers['Authorization'] = localStorage.getItem('session')
+        headers['Account-Id'] = localStorage.getItem('account_id')
+    }
+    const response = await fetch(url, {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        headers: headers,
+        body: JSON.stringify(data)
     })
     .catch((error) => {
         console.error('Error:', error);
@@ -112,13 +119,21 @@ async function get(url = '') {
 
 function logout(do_not_make_logout_rx_to_api) {
     if (do_not_make_logout_rx_to_api) {
-        localStorage.removeItem('session');
-        window.location.href = "/account/login";
+        localStorage.clear();
+        navigate("account/login");
+        notyf.open({
+            type: 'warning',
+            message: 'Your session has expired. You have been logged out.'
+        });
     } else {
         get(API_URL + '/account/logout')
         .then(r => {
-            localStorage.removeItem('session');
-            window.location.href = "/account/login";
+            localStorage.clear();
+            navigate("account/login");
+            notyf.open({
+                type: 'warning',
+                message: 'You have been logged out.'
+            });
         })
     }
 }
@@ -167,6 +182,12 @@ function coreRouter(route) {
         case route === "/account/general":
             displayPage(general_settings, route)
             break;
+        case route === "/account/login":
+            displayPage(account_login, route)
+            break;
+        case route === "/account/create":
+            displayPage(account_create, route)
+            break;
         case (route.split('/')[1] === "mx" && route.split('/')[3] === "overview"):
             displayPage(mx_overview, route)
             break;
@@ -180,6 +201,13 @@ function displayPage(obj, url) {
     e("view").innerHTML = obj.data;
     window.parent.document.title = obj.title + ' - PostAgent';
 
+    if (obj.sidebar) {
+        generateSidebar(obj.sidebar)
+        e("sidebar-container").style.display = "block";
+    } else {
+        e("sidebar-container").style.display = "none";
+    }
+
     for (let fn in obj.collect) {
         obj.collect[fn](last_navigation_time, url)
     }
@@ -192,7 +220,11 @@ function navigate(route) {
 
 // SIDEBAR
 
-function generateSidebar() {
+function generateSidebar(sidebar_ref) {
+
+    if (sidebar_ref) {
+
+    }
 
     e('sidebar-container').innerHTML = sidebar.data;
     e('email-slot').innerHTML = localStorage.getItem("email");
