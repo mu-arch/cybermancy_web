@@ -191,6 +191,9 @@ function coreRouter(route) {
         case (route.split('/')[1] === "mx" && route.split('/')[3] === "overview"):
             displayPage(mx_overview, route)
             break;
+        case (route.split('/')[1] === "mx" && route.split('/')[3] === "dns"):
+            displayPage(mx_dns, route)
+            break;
         default:
             displayPage(not_found, route)
     }

@@ -23,23 +23,23 @@ const sidebar = {
     links: {
         //language=HTML
         account: `
-            <div class="sidebar-header">Settings</div>
-            <div class="sidebar-item">
-                <div class="sidebar-icon"></div>
-                <div class="sidebar-text">General</div>
+            <div class="header">Settings</div>
+            <div class="item">
+                <div class="icon-awesomedude"></div>
+                <div class="text">General</div>
             </div>
-            <div class="sidebar-item">
-                <div class="sidebar-icon"></div>
-                <div class="sidebar-text"></div>
+            <div class="item">
+                <div class="icon-awesomedude"></div>
+                <div>Wallets</div>
             </div>
-            <div class="sidebar-header">Records</div>
-            <div class="sidebar-item">
-                <div class="sidebar-icon"></div>
-                <div class="sidebar-text">Billing</div>
+            <div class="header">Records</div>
+            <div class="item">
+                <div class="icon-awesomedude"></div>
+                <div>Billing</div>
             </div>
-            <div class="sidebar-item">
-                <div class="sidebar-icon"></div>
-                <div class="sidebar-text">Activity</div>
+            <div class="item">
+                <div class="icon icon-awesomedude"></div>
+                <div>Activity</div>
             </div>`
     }
 }
@@ -575,6 +575,40 @@ const mx_overview = {
             let domain = mx_data["domain"]
             document.title = `${domain} - PostAgent`
             document.getElementsByTagName("h1")[0].innerHTML = `<a onclick="navigate('mx/${domain_uuid}/overview')">${domain}</a><span>/</span>Overview`
+            e("syncing").style.opacity = "0";
+        }
+    ],
+    operations: {
+        get_mx: async function get_mx(uuid) {
+            return await get(API_URL + `/mx/${uuid}/basic`)
+        },
+    }
+}
+
+const mx_dns = {
+    title: "Exchange",
+    sidebar: "postagent-exchange",
+    //language=HTML
+    data: `
+        <div class="view-header">
+            <h1>Loading...</h1><span id="syncing"><i class="gg-loadbar-alt"></i></span>
+            <p>Let's get your domain configured to route mail through PostAgent. To do so, you'll need to update your DNS settings through your domain's registrar to the values we provide below.</p>
+        </div>
+        <div class="view-content">
+            <div class="button" onclick="navigate('')">Return to Exchange list</div>
+        </div>`,
+    collect: [
+        async function (start_time, url) {
+            let domain_uuid = url.split("/")[2];
+
+            let mx_data = await mx_overview.operations.get_mx(domain_uuid)
+            if (start_time < last_navigation_time) {
+                return
+            }
+
+            let domain = mx_data["domain"]
+            document.title = `${domain} - PostAgent`
+            document.getElementsByTagName("h1")[0].innerHTML = `<a onclick="navigate('mx/${domain_uuid}/overview')">${domain}</a><span>/</span>DNS`
             e("syncing").style.opacity = "0";
         }
     ],
