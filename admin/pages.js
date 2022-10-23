@@ -596,7 +596,8 @@ const mx_dns = {
                 your domain's MX records to our servers, so we can begin coordinating email traffic on your behalf.</p>
             <p>To do so, you'll need to update your DNS settings through your domain's registrar to the values we
                 provide below.</p>
-            <p>Typically DNS settings propagate within an hour, but in some cases it can take over 24 hours. Refresh this page to check if the records are valid.</p>
+            <p>Typically DNS settings propagate within an hour, but in some cases it can take over 24 hours. Refresh
+                this page to check if the records are valid.</p>
         </div>
         <div class="view-content">
             <div class="page-group">
@@ -619,7 +620,7 @@ const mx_dns = {
                         <td>txt</td>
                         <td class="domain-slot">?</td>
                         <td>
-                            <div class="field">v=spf1 include:postagent.cybermancy.org ~all</div>
+                            <div class="field" onclick="mx_dns.operations.copy_to_clipboard(this)">v=spf1 include:postagent.cybermancy.org ~all</div>
                         </td>
                         <td>
                             <div class="high-vis invalid">?</div>
@@ -629,7 +630,7 @@ const mx_dns = {
                         <td>txt</td>
                         <td id="dkim-record-name"></td>
                         <td>
-                            <div class="field" id="dkim-slot">?</div>
+                            <div class="field" id="dkim-slot" onclick="mx_dns.operations.copy_to_clipboard(this)">?</div>
                         </td>
                         <td>
                             <div class="high-vis invalid">?</div>
@@ -676,7 +677,7 @@ const mx_dns = {
                         <td>mx</td>
                         <td class="domain-slot">?</td>
                         <td>
-                            <div class="field">10 mxa.postagent.cybermancy.org.</div>
+                            <div class="field" onclick="mx_dns.operations.copy_to_clipboard(this)">10 mxa.postagent.cybermancy.org.</div>
                         </td>
                         <td>
                             <div class="high-vis invalid">?</div>
@@ -686,7 +687,7 @@ const mx_dns = {
                         <td>mx</td>
                         <td class="domain-slot">?</td>
                         <td>
-                            <div class="field">20 mxb.postagent.cybermancy.org.</div>
+                            <div class="field" onclick="mx_dns.operations.copy_to_clipboard(this)">20 mxb.postagent.cybermancy.org.</div>
                         </td>
                         <td>
                             <div class="high-vis invalid">?</div>
@@ -722,7 +723,7 @@ const mx_dns = {
                         <td>cname</td>
                         <td id="cname-slot">?</td>
                         <td>
-                            <div class="field">postagent.cybermancy.org.</div>
+                            <div class="field" onclick="mx_dns.operations.copy_to_clipboard(this)">postagent.cybermancy.org.</div>
                         </td>
                         <td>
                             <div class="high-vis invalid">?</div>
@@ -798,16 +799,24 @@ const mx_dns = {
                 top: -5px;
                 font-family: monospace;
                 padding: 10px;
-                
+                line-height: 14px;
                 border: 1px solid #5d5d5d;
                 background: #232323;
                 border-radius: 5px;
                 font-size: 10px;
                 max-width: 200px;
+                cursor: pointer;
+                transition-duration: 500ms;
+            }
+
+            .field:hover {
+                background: #383838;
             }
             
-            .field-bg {
-                
+            .field:active {
+                transition-duration: 0s;
+                background: #232323;
+                transform: scale(.95);
             }
 
             .number {
@@ -869,9 +878,17 @@ const mx_dns = {
         }
     ],
     operations: {
-        get_mx: async function get_mx(uuid) {
+        get_mx: async function (uuid) {
             return await get(API_URL + `/mx/${uuid}/basic`)
         },
+        copy_to_clipboard: async function (elm) {
+            var range = document.createRange();
+            range.selectNode(elm);
+            window.getSelection().addRange(range);
+            document.execCommand("copy");
+            window.getSelection().removeAllRanges();
+            notyf.success("Text copied to clipboard!")
+        }
     }
 }
 
