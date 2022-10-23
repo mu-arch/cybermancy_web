@@ -552,12 +552,12 @@ const general_settings = {
 }
 
 const mx_overview = {
-    title: "Exchange",
+    title: "Overview",
     sidebar: "postagent-exchange",
     //language=HTML
     data: `
         <div class="view-header">
-            <h1>Loading...</h1><span id="syncing"><i class="gg-loadbar-alt"></i></span>
+            <h1>Exchange Overview</h1><span id="syncing"><i class="gg-loadbar-alt"></i></span>
         </div>
         <div class="view-content">
             <div class="button" onclick="navigate('')">Return to Exchange list</div>
@@ -574,7 +574,7 @@ const mx_overview = {
 
             let domain = mx_data["domain"]
             document.title = `${domain} - PostAgent`
-            document.getElementsByTagName("h1")[0].innerHTML = `<a onclick="navigate('mx/${domain_uuid}/overview')">${domain}</a><span>/</span>Overview`
+            //document.getElementsByTagName("h1")[0].innerHTML = `<a onclick="navigate('mx/${domain_uuid}/overview')">${domain}</a><span>/</span>Overview`
             e("syncing").style.opacity = "0";
         }
     ],
