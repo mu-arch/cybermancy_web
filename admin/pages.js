@@ -596,6 +596,7 @@ const mx_dns = {
                 your domain's MX records to our servers, so we can begin coordinating email traffic on your behalf.</p>
             <p>To do so, you'll need to update your DNS settings through your domain's registrar to the values we
                 provide below.</p>
+            <p>Typically DNS settings propagate within an hour, but in some cases it can take over 24 hours. Refresh this page to check if the records are valid.</p>
         </div>
         <div class="view-content">
             <div class="page-group">
@@ -603,7 +604,7 @@ const mx_dns = {
                 <table>
                     <colgroup>
                         <col span="1" style="width: 40px;">
-                        <col span="1" style="width: 90px;">
+                        <col span="1" style="width: 150px;">
                         <col span="1" style="width: 70px;">
                         <col span="1" style="width: 40px;">
                     </colgroup>
@@ -616,7 +617,7 @@ const mx_dns = {
                     </tr>
                     <tr>
                         <td>txt</td>
-                        <td>?</td>
+                        <td class="domain-slot">?</td>
                         <td>
                             <div class="field">v=spf1 include:postagent.cybermancy.org ~all</div>
                         </td>
@@ -626,9 +627,9 @@ const mx_dns = {
                     </tr>
                     <tr>
                         <td>txt</td>
-                        <td>?</td>
+                        <td id="dkim-record-name"></td>
                         <td>
-                            <div class="field">?</div>
+                            <div class="field" id="dkim-slot">?</div>
                         </td>
                         <td>
                             <div class="high-vis invalid">?</div>
@@ -660,7 +661,7 @@ const mx_dns = {
                 <table>
                     <colgroup>
                         <col span="1" style="width: 40px;">
-                        <col span="1" style="width: 90px;">
+                        <col span="1" style="width: 150px;">
                         <col span="1" style="width: 70px;">
                         <col span="1" style="width: 40px;">
                     </colgroup>
@@ -673,7 +674,7 @@ const mx_dns = {
                     </tr>
                     <tr>
                         <td>mx</td>
-                        <td>?</td>
+                        <td class="domain-slot">?</td>
                         <td>
                             <div class="field">10 mxa.postagent.cybermancy.org.</div>
                         </td>
@@ -683,7 +684,7 @@ const mx_dns = {
                     </tr>
                     <tr>
                         <td>mx</td>
-                        <td>?</td>
+                        <td class="domain-slot">?</td>
                         <td>
                             <div class="field">20 mxb.postagent.cybermancy.org.</div>
                         </td>
@@ -706,7 +707,7 @@ const mx_dns = {
                 <table>
                     <colgroup>
                         <col span="1" style="width: 40px;">
-                        <col span="1" style="width: 90px;">
+                        <col span="1" style="width: 150px;">
                         <col span="1" style="width: 70px;">
                         <col span="1" style="width: 40px;">
                     </colgroup>
@@ -719,9 +720,9 @@ const mx_dns = {
                     </tr>
                     <tr>
                         <td>cname</td>
-                        <td>wo8vy2th.domain.com</td>
+                        <td id="cname-slot">?</td>
                         <td>
-                            <div class="field">10 mxa.postagent.cybermancy.org.</div>
+                            <div class="field">postagent.cybermancy.org.</div>
                         </td>
                         <td>
                             <div class="high-vis invalid">?</div>
@@ -739,7 +740,18 @@ const mx_dns = {
         <style>
 
             .page-group {
-                padding: 20px 0 60px 0;
+                padding: 40px;
+                background: #1a1a1a;
+                margin-bottom: 40px;
+                border-radius: 5px;
+            }
+
+            h2 {
+                color: #fff;
+                text-decoration: underline;
+                display: inline-block;
+                border-radius: 5px;
+                margin-bottom: 20px;
             }
 
             .page-group p {
@@ -764,17 +776,11 @@ const mx_dns = {
             }
 
             .view-content td {
-                padding: 40px 0;
+                padding: 40px 10px 40px 0;
                 border-bottom: 1px solid #2d2d2d;
-                line-height: 0;
-            }
-
-            .message-only {
-                background: none !important;
-            }
-
-            .message-only td {
-                cursor: default;
+                vertical-align: top;
+                max-width: 150px;
+                word-wrap: break-word;
             }
 
             .view-content td:first-child {
@@ -784,16 +790,24 @@ const mx_dns = {
             }
 
             .view-content td:nth-child(2) {
-                font-size: 13px
+                font-size: 13px;
             }
 
             .field {
+                position: relative;
+                top: -5px;
                 font-family: monospace;
                 padding: 10px;
-                display: inline;
+                
                 border: 1px solid #5d5d5d;
                 background: #232323;
-                border-radius: 6px;
+                border-radius: 5px;
+                font-size: 10px;
+                max-width: 200px;
+            }
+            
+            .field-bg {
+                
             }
 
             .number {
@@ -829,12 +843,28 @@ const mx_dns = {
         async function (start_time, url) {
             let domain_uuid = url.split("/")[2];
 
-            let mx_data = await mx_overview.operations.get_mx(domain_uuid)
+            let dns_data = await mx_dns.operations.get_mx(domain_uuid)
             if (start_time < last_navigation_time) {
                 return
             }
 
-            let domain = mx_data["domain"]
+            let domain = dns_data["domain"]
+            let key = dns_data["dkim_public_key"];
+            key = key.replace(/\n/g, '');
+            key = key.replace(/-----BEGIN PUBLIC KEY-----/g, '');
+            key = key.replace(/-----END PUBLIC KEY-----/g, '');
+            key = 'k=rsa; p=' + key;
+            console.log(key)
+            e('dkim-slot').innerHTML = key;
+            e('dkim-record-name').innerText = `${dns_data["dkim_selector"]}._domainkey.` + domain;
+
+            var elements = document.getElementsByClassName('domain-slot')
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].innerText = domain;
+            }
+
+            e('cname-slot').innerHTML = "wo8vy2th." + domain;
+
             e("syncing").style.opacity = "0";
         }
     ],
