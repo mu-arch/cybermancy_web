@@ -463,12 +463,8 @@ const general_settings = {
         async function (start_time, url) {
 
             [].forEach.call(document.getElementsByClassName("menu-head"), function (el) {
-                el.insertAdjacentHTML("beforeend", `<div class="settings-expand" style="top: ${(el.clientHeight / 2) - 15}px" onmousedown="general_settings.operations.toggle_field(this)">open</div>`);
-                let menu_block = el.parentNode;
-                let block_height = menu_block.offsetHeight;
-                menu_block.setAttribute("data-initHeight", block_height)
-
-                menu_block.style.height = `${el.offsetHeight}px`;
+                el.insertAdjacentHTML("beforeend", `<div class="settings-expand" style="top: ${(el.clientHeight / 2) - 15}px" onmousedown="mx_dns.operations.toggle_field(this)">open</div>`);
+                el.parentNode.style.height = `${el.offsetHeight}px`;
             })
 
             let settings = await general_settings.operations.get_user_settings()
@@ -539,7 +535,14 @@ const general_settings = {
             }
         },
         expand_field: function (self, menu_head, menu_block) {
-            menu_block.style.height = `${parseInt(menu_block.getAttribute("data-initHeight")) + 12}px`;
+            let height = 0;
+            [].forEach.call(menu_block.childNodes, function (el) {
+                if (Number.isFinite(el.clientHeight)) {
+                    height += el.clientHeight;
+                }
+            })
+
+            menu_block.style.height = `${height + 12}px`;
             menu_block.style.background = "#1a1a1a"
             menu_head.querySelector(".settings-expand").innerHTML = "close";
             menu_head.style.marginTop = "12px"
@@ -836,11 +839,7 @@ const mx_dns = {
 
             [].forEach.call(document.getElementsByClassName("menu-head"), function (el) {
                 el.insertAdjacentHTML("beforeend", `<div class="settings-expand" style="top: ${(el.clientHeight / 2) - 15}px" onmousedown="mx_dns.operations.toggle_field(this)">open</div>`);
-                let menu_block = el.parentNode;
-                let block_height = menu_block.offsetHeight;
-                menu_block.setAttribute("data-initHeight", block_height)
-
-                menu_block.style.height = `${el.offsetHeight}px`;
+                el.parentNode.style.height = `${el.offsetHeight}px`;
             })
 
             let domain_uuid = url.split("/")[2];
