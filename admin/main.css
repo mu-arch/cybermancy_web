@@ -237,8 +237,6 @@ a:visited {
     padding: 35px 50px;
     min-width: 600px;
     flex-grow: 1;
-    max-width: 1200px;
-    margin: auto;
 }
 
 .view-header {

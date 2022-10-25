@@ -213,8 +213,10 @@ const mxs_list_overview = {
         insert_mxs: function insert_mxs(mxs) {
             mxs.forEach(item => {
                 let dns_valid = "invalid"
+                let dns_valid_text = "problem"
                 if (item["dns_valid"]) {
                     dns_valid = "valid"
+                    dns_valid_text = "valid"
                 }
                 let acl_grants
                 if (item["acl_grants"].length === 1) {
@@ -226,7 +228,7 @@ const mxs_list_overview = {
                 e("table-body").insertAdjacentHTML("beforeend", `<tr onclick="navigate('mx/${item['mx']}/overview')">
         <td><div class="primary">${item["domain"]}</div><div class="click-to-open">open</div></td>
         <td><div class="bold">${acl_grants}</div></td>
-        <td><div class="high-vis ${dns_valid}">${dns_valid}</div></td>
+        <td><div class="high-vis ${dns_valid}">${dns_valid_text}</div></td>
         </tr>`)
             })
         }
@@ -620,8 +622,11 @@ const mx_dns = {
                         <div class="menu-head">
                             <h4>1. Authentication records</h4>
                             <p>Authenticate your domain to other mail servers.</p>
+                            <div id="auth-config" class="invalid notification-menu-header">Problem</div>
                         </div>
                         <div class="menu-content">
+                            <p id="dkim-warning" class="warning">WARNING: Duplicate DKIM _domainkey record detected on this selector. Remove the invalid _domainkey txt record so the _domainkey value below is the only _domainkey on this selector.</p>
+
                             <table>
                                 <colgroup>
                                     <col span="1" style="width: 20px;">
@@ -659,7 +664,6 @@ const mx_dns = {
                                 </tbody>
                             </table>
 
-
                             <h3>What do these records do?</h3>
 
                             <p>Recipient mail servers use these records to verify mail is actually coming from who it claims to be
@@ -682,9 +686,13 @@ const mx_dns = {
                         <div class="menu-head">
                             <h4>2. MX records</h4>
                             <p>Advertise PostAgent as your domain's MTA.</p>
+                            <div id="mx-config" class="invalid notification-menu-header">Problem</div>
                         </div>
                         <div class="menu-content">
-                            
+
+                            <p id="mx-warning" class="warning">WARNING: Additional invalid MX records were found in your DNS configuration. Remove all MX records except the ones in the table below.</p>
+
+
                             <table>
                                 <colgroup>
                                     <col span="1" style="width: 20px;">
@@ -721,7 +729,7 @@ const mx_dns = {
                                 </tr>
                                 </tbody>
                             </table>
-
+                            
                             <h3>Just to clarify:</h3>
 
                             <p>The values listed above are in BIND format. Your registrar may require you to enter them differently.
@@ -738,7 +746,27 @@ const mx_dns = {
             
         </div>
         <style>
+            .notification-menu-header {
+                right: 100px;
+                display: none;
+                pointer-events: none;
+                padding: 5px 10px;
+                position: absolute;
+                text-transform: uppercase;
+                font-weight: 700;
+                font-size: 11px;
+                letter-spacing: 1px;
+                border-radius:5px;
+            }
             
+            .warning {
+                color: red!important;
+                font-size: 20px!important;
+                line-height: 25px!important;
+                margin-bottom: 30px;
+                display: none;
+                font-weight: 700;
+            }
 
             .menu-content p {
                 max-width: 650px;
@@ -879,6 +907,29 @@ const mx_dns = {
             if (dns_data["mxb"]) {
                 e('mxb-valid').classList.replace('invalid', 'valid');
                 e('mxb-valid').innerText = "valid"
+            }
+
+            if (dns_data["non_postagent_dkim"]) {
+                e('dkim-warning').style.display = "block";
+            }
+
+            if (dns_data["non_postagent_mx"]) {
+                e('mx-warning').style.display = "block";
+            }
+
+            [].forEach.call(document.getElementsByClassName("notification-menu-header"), function (el) {
+                el.style.display = "inline-block"
+                el.style.top = `${(el.parentNode.clientHeight / 2) - 11}px`
+            })
+
+            if (dns_data["spf"] && dns_data["dkim"] && !dns_data["non_postagent_dkim"]) {
+                e('auth-config').classList.replace("invalid", "valid")
+                e('auth-config').innerText = "valid"
+            }
+
+            if (dns_data["mxa"] && dns_data["mxb"] && !dns_data["non_postagent_mx"]) {
+                e('mx-config').classList.replace("invalid", "valid")
+                e('mx-config').innerText = "valid"
             }
 
             e("syncing").style.opacity = "0";
