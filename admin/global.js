@@ -46,12 +46,12 @@ function rate_limit(fn) {
     fn();
 }
 
-async function post(url = '', data = {}, noheaders) {
+async function post(url = '', data = {}, no_headers) {
     let current_nav_time = last_navigation_time
     let headers = {
             'Content-Type': 'application/json',
         };
-    if (!noheaders) {
+    if (!no_headers) {
         headers['Authorization'] = localStorage.getItem('session')
         headers['Account-Id'] = localStorage.getItem('account_id')
     }
@@ -64,6 +64,7 @@ async function post(url = '', data = {}, noheaders) {
     })
     .catch((error) => {
         console.error('Error:', error);
+        notyf.error(error);
         return {err: error}
     });
 

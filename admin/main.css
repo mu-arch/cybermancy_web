@@ -237,6 +237,8 @@ a:visited {
     padding: 35px 50px;
     min-width: 600px;
     flex-grow: 1;
+    max-width: 1200px;
+    margin: auto;
 }
 
 .view-header {
@@ -544,16 +546,6 @@ h1 a:hover {
     background-color: #1f1f1f;
     padding: 0 20px;
     transition: all 300ms;
-    border-left: 2px solid #2c2c2c;
-    border-right: 2px solid #2c2c2c;
-}
-
-.menu-part:first-child {
-    border-top: 2px solid #2c2c2c;
-}
-
-.menu-part:last-child {
-    border-bottom: 2px solid #2c2c2c;
 }
 
 .menu-part:not(:last-child) {
@@ -683,7 +675,7 @@ h1 a:hover {
 .settings-option {
     width: 200px;
     padding: 15px 15px;
-    border: 2px solid #2c2c2c;
+    border: 2px solid #232323;
     background-color: #232323;
     border-radius: 5px;
     margin: 25px 25px 0 0;

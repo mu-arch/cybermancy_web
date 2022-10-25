@@ -253,13 +253,12 @@ let mx_new = {
     collect: [
         async function (url) {
             setTimeout(function () {
-                console.log("works")
                 document.getElementsByName("domain")[0].focus()
             }, 100);
         }
     ],
     operations: {
-        create: function create() {
+        create: async function create() {
             let domain = document.getElementsByName("domain")[0].value;
             e("modal-notif").style.display = "block";
             if (!validateDomain(domain)) {
@@ -273,9 +272,12 @@ let mx_new = {
             e("form-buttons").style.pointerEvents = "none";
             e("form-buttons").style.opacity = ".25";
             insertLoadingAnimation(e("modal-notif"), true)
-            post(API_URL + '/mx/create', obj).then(r => {
-                console.log(r)
-            })
+            let result = await post(API_URL + '/mx/create', obj)
+            if (result.err) {
+                return
+            }
+            closeControlModal()
+            navigate(`mx/${result.uuid}/dns`)
         }
     }
 }
@@ -592,170 +594,150 @@ const mx_dns = {
     data: `
         <div class="view-header">
             <h1>DNS Configuration</h1><span id="syncing"><i class="gg-loadbar-alt"></i></span>
+            <div class="view-header-controls">
+                <div class="button" onmousedown="location.reload()">
+                    Refresh
+                </div>
+            </div>
             <p>Emails are routed over the internet using records stored in the DNS system. This page explains how to map
                 your domain's MX records to our servers, so we can begin coordinating email traffic on your behalf.</p>
             <p>To do so, you'll need to update your DNS settings through your domain's registrar to the values we
                 provide below.</p>
             <p>Typically DNS settings propagate within an hour, but in some cases it can take over 24 hours. Refresh
                 this page to check if the records are valid.</p>
+            
         </div>
         <div class="view-content">
-            <div class="page-group">
-                <h2>1. Add basic records (required):</h2>
-                <table>
-                    <colgroup>
-                        <col span="1" style="width: 40px;">
-                        <col span="1" style="width: 150px;">
-                        <col span="1" style="width: 70px;">
-                        <col span="1" style="width: 40px;">
-                    </colgroup>
-                    <tbody id="table-body">
-                    <tr>
-                        <th>type</th>
-                        <th>hostname</th>
-                        <th>required value</th>
-                        <th>status</th>
-                    </tr>
-                    <tr>
-                        <td>txt</td>
-                        <td class="domain-slot">?</td>
-                        <td>
-                            <div class="field" onclick="mx_dns.operations.copy_to_clipboard(this)">v=spf1 include:postagent.cybermancy.org ~all</div>
-                        </td>
-                        <td>
-                            <div class="high-vis invalid">?</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>txt</td>
-                        <td id="dkim-record-name"></td>
-                        <td>
-                            <div class="field" id="dkim-slot" onclick="mx_dns.operations.copy_to_clipboard(this)">?</div>
-                        </td>
-                        <td>
-                            <div class="high-vis invalid">?</div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
 
 
-                <h3>What do these records do?</h3>
+            <div class="menu-section">
 
-                <p>Recipient mail servers use these records to verify mail is actually coming from who it claims to be
-                    from.
-                    Their technical names are SPF and DKIM.</p>
+                <div class="menu-wrapper">
+                    <div class="menu-part">
+                        <div class="menu-head">
+                            <h4>1. Authentication records</h4>
+                            <p>Authenticate your domain to other mail servers.</p>
+                        </div>
+                        <div class="menu-content">
+                            <table>
+                                <colgroup>
+                                    <col span="1" style="width: 20px;">
+                                    <col span="1" style="width: 150px;">
+                                    <col span="1" style="width: 70px;">
+                                    <col span="1" style="width: 40px;">
+                                </colgroup>
+                                <tbody id="table-body">
+                                <tr>
+                                    <th>type</th>
+                                    <th>hostname</th>
+                                    <th>required value</th>
+                                    <th>status</th>
+                                </tr>
+                                <tr>
+                                    <td>txt</td>
+                                    <td class="domain-slot">?</td>
+                                    <td>
+                                        <div class="field" onclick="mx_dns.operations.copy_to_clipboard(this)">v=spf1 include:postagent.cybermancy.org ~all</div>
+                                    </td>
+                                    <td>
+                                        <div id="spf-valid" class="high-vis invalid">Invalid</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>txt</td>
+                                    <td id="dkim-record-name"></td>
+                                    <td>
+                                        <div class="field" id="dkim-slot" onclick="mx_dns.operations.copy_to_clipboard(this)">?</div>
+                                    </td>
+                                    <td>
+                                        <div id="dkim-valid" class="high-vis invalid">Invalid</div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
 
-                <p>SPF stands for "Sender Policy Framework" an anti-forgery system that ensures to the recipient mail
-                    server
-                    that PostAgent's IP is allowed to send on behalf of your domain.</p>
 
-                <p>DKIM stands for "DomainKeys Identified Mail" a cryptographic signature based anti-forgery system that
-                    allows recipient servers to (1) verify an email's "from" address is not spoofed and (2) ensure mail
-                    content was not altered in transit. DKIM does NOT encrypt your emails (that's SSL).
-                    Note: Your registrar may split the long DKIM key into two records. This is normal.</p>
+                            <h3>What do these records do?</h3>
+
+                            <p>Recipient mail servers use these records to verify mail is actually coming from who it claims to be
+                                from.
+                                Their technical names are SPF and DKIM.</p>
+
+                            <p>SPF stands for "Sender Policy Framework" an anti-forgery system that ensures to the recipient mail
+                                server
+                                that PostAgent's IP is allowed to send on behalf of your domain.</p>
+
+                            <p>DKIM stands for "DomainKeys Identified Mail" a cryptographic signature based anti-forgery system that
+                                allows recipient servers to (1) verify an email's "from" address is not spoofed and (2) ensure mail
+                                content was not altered in transit. DKIM does NOT encrypt your emails (that's SSL).
+                                Note: Your registrar may split the long DKIM key into two records. This is normal.</p>
+                        </div>
+                    </div>
+
+
+                    <div class="menu-part">
+                        <div class="menu-head">
+                            <h4>2. MX records</h4>
+                            <p>Advertise PostAgent as your domain's MTA.</p>
+                        </div>
+                        <div class="menu-content">
+                            
+                            <table>
+                                <colgroup>
+                                    <col span="1" style="width: 20px;">
+                                    <col span="1" style="width: 150px;">
+                                    <col span="1" style="width: 70px;">
+                                    <col span="1" style="width: 40px;">
+                                </colgroup>
+                                <tbody id="table-body">
+                                <tr>
+                                    <th>type</th>
+                                    <th>hostname</th>
+                                    <th>required value</th>
+                                    <th>status</th>
+                                </tr>
+                                <tr>
+                                    <td>mx</td>
+                                    <td class="domain-slot">?</td>
+                                    <td>
+                                        <div class="field" onclick="mx_dns.operations.copy_to_clipboard(this)">10 mxa.postagent.cybermancy.org.</div>
+                                    </td>
+                                    <td>
+                                        <div id="mxa-valid" class="high-vis invalid">Invalid</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>mx</td>
+                                    <td class="domain-slot">?</td>
+                                    <td>
+                                        <div class="field" onclick="mx_dns.operations.copy_to_clipboard(this)">20 mxb.postagent.cybermancy.org.</div>
+                                    </td>
+                                    <td>
+                                        <div id="mxb-valid" class="high-vis invalid">Invalid</div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                            <h3>Just to clarify:</h3>
+
+                            <p>The values listed above are in BIND format. Your registrar may require you to enter them differently.
+                                The number before the required value represents the "priority" of the MX server. Some registrars may
+                                exclude the trailing "." while others will require it.
+                                Make sure PostAgent's MX records are the only MX records for this specific domain or sub-domain.</p>
+                            
+                        </div>
+                    </div>
+
+                </div>
             </div>
-
-            <div class="page-group">
-                <h2>2. Add MX records to receive mail (optional):</h2>
-
-                <table>
-                    <colgroup>
-                        <col span="1" style="width: 40px;">
-                        <col span="1" style="width: 150px;">
-                        <col span="1" style="width: 70px;">
-                        <col span="1" style="width: 40px;">
-                    </colgroup>
-                    <tbody id="table-body">
-                    <tr>
-                        <th>type</th>
-                        <th>hostname</th>
-                        <th>required value</th>
-                        <th>status</th>
-                    </tr>
-                    <tr>
-                        <td>mx</td>
-                        <td class="domain-slot">?</td>
-                        <td>
-                            <div class="field" onclick="mx_dns.operations.copy_to_clipboard(this)">10 mxa.postagent.cybermancy.org.</div>
-                        </td>
-                        <td>
-                            <div class="high-vis invalid">?</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>mx</td>
-                        <td class="domain-slot">?</td>
-                        <td>
-                            <div class="field" onclick="mx_dns.operations.copy_to_clipboard(this)">20 mxb.postagent.cybermancy.org.</div>
-                        </td>
-                        <td>
-                            <div class="high-vis invalid">?</div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <h3>Just to clarify:</h3>
-
-                <p>The values listed above are in BIND format. Your registrar may require you to enter them differently.
-                    The number before the required value represents the "priority" of the MX server. Some registrars may
-                    exclude the trailing "." while others will require it.
-                    Make sure PostAgent's MX records are the only MX records for this specific domain or sub-domain.</p>
-            </div>
-            <div class="page-group">
-                <h2>3. Add a CNAME record to track unsubscribes, opens, & clicks (optional)</h2>
-                <table>
-                    <colgroup>
-                        <col span="1" style="width: 40px;">
-                        <col span="1" style="width: 150px;">
-                        <col span="1" style="width: 70px;">
-                        <col span="1" style="width: 40px;">
-                    </colgroup>
-                    <tbody id="table-body">
-                    <tr>
-                        <th>type</th>
-                        <th>hostname</th>
-                        <th>required value</th>
-                        <th>status</th>
-                    </tr>
-                    <tr>
-                        <td>cname</td>
-                        <td id="cname-slot">?</td>
-                        <td>
-                            <div class="field" onclick="mx_dns.operations.copy_to_clipboard(this)">postagent.cybermancy.org.</div>
-                        </td>
-                        <td>
-                            <div class="high-vis invalid">?</div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <h3>What's next?</h3>
-
-                <p>Typically DNS settings propagate within an hour, but in some cases it can take over 24 hours.</p>
-
-            </div>
+            
+            
         </div>
         <style>
+            
 
-            .page-group {
-                padding: 40px;
-                background: #1a1a1a;
-                margin-bottom: 40px;
-                border-radius: 5px;
-            }
-
-            h2 {
-                color: #fff;
-                text-decoration: underline;
-                display: inline-block;
-                border-radius: 5px;
-                margin-bottom: 20px;
-            }
-
-            .page-group p {
+            .menu-content p {
                 max-width: 650px;
                 padding: 10px 0;
                 font-size: 13px;
@@ -777,7 +759,7 @@ const mx_dns = {
             }
 
             .view-content td {
-                padding: 40px 10px 40px 0;
+                padding: 20px 10px 10px 0;
                 border-bottom: 1px solid #2d2d2d;
                 vertical-align: top;
                 max-width: 150px;
@@ -786,8 +768,8 @@ const mx_dns = {
 
             .view-content td:first-child {
                 font-family: monospace;
-                text-transform: uppercase;
                 font-weight: 700;
+                font-size: 12px;
             }
 
             .view-content td:nth-child(2) {
@@ -807,6 +789,7 @@ const mx_dns = {
                 max-width: 200px;
                 cursor: pointer;
                 transition-duration: 500ms;
+                transition-property: transform;
             }
 
             .field:hover {
@@ -850,20 +833,27 @@ const mx_dns = {
             }</style>`,
     collect: [
         async function (start_time, url) {
+
+            [].forEach.call(document.getElementsByClassName("menu-head"), function (el) {
+                el.insertAdjacentHTML("beforeend", `<div class="settings-expand" style="top: ${(el.clientHeight / 2) - 15}px" onmousedown="mx_dns.operations.toggle_field(this)">open</div>`);
+                let menu_block = el.parentNode;
+                let block_height = menu_block.offsetHeight;
+                menu_block.setAttribute("data-initHeight", block_height)
+
+                menu_block.style.height = `${el.offsetHeight}px`;
+            })
+
             let domain_uuid = url.split("/")[2];
 
-            let dns_data = await mx_dns.operations.get_mx(domain_uuid)
+            let dns_data = await mx_dns.operations.get_dns(domain_uuid)
             if (start_time < last_navigation_time) {
                 return
             }
 
+
             let domain = dns_data["domain"]
             let key = dns_data["dkim_public_key"];
-            key = key.replace(/\n/g, '');
-            key = key.replace(/-----BEGIN PUBLIC KEY-----/g, '');
-            key = key.replace(/-----END PUBLIC KEY-----/g, '');
-            key = 'k=rsa; p=' + key;
-            console.log(key)
+
             e('dkim-slot').innerHTML = key;
             e('dkim-record-name').innerText = `${dns_data["dkim_selector"]}._domainkey.` + domain;
 
@@ -872,14 +862,32 @@ const mx_dns = {
                 elements[i].innerText = domain;
             }
 
-            e('cname-slot').innerHTML = "wo8vy2th." + domain;
+            if (dns_data["spf"]) {
+                e('spf-valid').classList.replace('invalid', 'valid');
+                e('spf-valid').innerText = "valid"
+            }
+
+            if (dns_data["dkim"]) {
+                e('dkim-valid').classList.replace('invalid', 'valid');
+                e('dkim-valid').innerText = "valid"
+            }
+
+            if (dns_data["mxa"]) {
+                e('mxa-valid').classList.replace('invalid', 'valid');
+                e('mxa-valid').innerText = "valid"
+            }
+
+            if (dns_data["mxb"]) {
+                e('mxb-valid').classList.replace('invalid', 'valid');
+                e('mxb-valid').innerText = "valid"
+            }
 
             e("syncing").style.opacity = "0";
         }
     ],
     operations: {
-        get_mx: async function (uuid) {
-            return await get(API_URL + `/mx/${uuid}/basic`)
+        get_dns: async function (uuid) {
+            return await get(API_URL + `/mx/${uuid}/dns`)
         },
         copy_to_clipboard: async function (elm) {
             var range = document.createRange();
@@ -888,6 +896,34 @@ const mx_dns = {
             document.execCommand("copy");
             window.getSelection().removeAllRanges();
             notyf.success("Text copied to clipboard!")
+        },
+        toggle_field: function (self) {
+            let menu_head = self.parentNode;
+            let menu_block = menu_head.parentNode
+            if (menu_head.clientHeight === menu_block.clientHeight) {
+                mx_dns.operations.expand_field(self, menu_head, menu_block)
+            } else {
+                mx_dns.operations.close_field(self, menu_head, menu_block)
+            }
+        },
+        expand_field: function (self, menu_head, menu_block) {
+            let height = 0;
+            [].forEach.call(menu_block.childNodes, function (el) {
+                if (Number.isFinite(el.clientHeight)) {
+                    height += el.clientHeight;
+                }
+            })
+
+            menu_block.style.height = `${height + 12}px`;
+            menu_block.style.background = "#1a1a1a"
+            menu_head.querySelector(".settings-expand").innerHTML = "close";
+            menu_head.style.marginTop = "12px"
+        },
+        close_field: function (self, menu_head, menu_block) {
+            menu_block.style.removeProperty("background")
+            menu_head.style.removeProperty("margin-top")
+            menu_block.style.height = `${menu_head.clientHeight}px`;
+            menu_head.querySelector(".settings-expand").innerHTML = "open";
         }
     }
 }
