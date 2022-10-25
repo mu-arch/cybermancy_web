@@ -603,10 +603,10 @@ const mx_dns = {
                 </div>
             </div>
             <p>Emails are routed over the internet using records stored in the DNS system. This page explains how to map
-                your domain's MX records to our servers, so we can begin coordinating email traffic on your behalf.</p>
+                your domain's DNS records to our servers, so we can begin coordinating email traffic on your behalf.</p>
             <p>To do so, you'll need to update your DNS settings through your domain's registrar to the values we
                 provide below.</p>
-            <p>Typically DNS settings propagate within an hour, but in some cases it can take over 24 hours. Refresh
+            <p>Typically DNS settings propagate in under an hour, but in some cases it can take over 24 hours. Refresh
                 this page to check if the records are valid.</p>
             
         </div>
