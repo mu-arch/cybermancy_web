@@ -645,7 +645,7 @@ const mx_dns = {
                                     <td>txt</td>
                                     <td class="domain-slot">?</td>
                                     <td>
-                                        <div class="field" onclick="mx_dns.operations.copy_to_clipboard(this)">v=spf1 include:postagent.cybermancy.org ~all</div>
+                                        <div class="field" onmousedown="mx_dns.operations.copy_to_clipboard(this)">v=spf1 include:postagent.cybermancy.org ~all</div>
                                     </td>
                                     <td>
                                         <div id="spf-valid" class="high-vis invalid">Invalid</div>
@@ -655,7 +655,7 @@ const mx_dns = {
                                     <td>txt</td>
                                     <td id="dkim-record-name"></td>
                                     <td>
-                                        <div class="field" id="dkim-slot" onclick="mx_dns.operations.copy_to_clipboard(this)">?</div>
+                                        <div class="field" id="dkim-slot" onmousedown="mx_dns.operations.copy_to_clipboard(this)">?</div>
                                     </td>
                                     <td>
                                         <div id="dkim-valid" class="high-vis invalid">Invalid</div>
@@ -711,7 +711,7 @@ const mx_dns = {
                                     <td>mx</td>
                                     <td class="domain-slot">?</td>
                                     <td>
-                                        <div class="field" onclick="mx_dns.operations.copy_to_clipboard(this)">10 mxa.postagent.cybermancy.org.</div>
+                                        <div class="field" onmousedown="mx_dns.operations.copy_to_clipboard(this)">10 mxa.postagent.cybermancy.org.</div>
                                     </td>
                                     <td>
                                         <div id="mxa-valid" class="high-vis invalid">Invalid</div>
@@ -721,7 +721,7 @@ const mx_dns = {
                                     <td>mx</td>
                                     <td class="domain-slot">?</td>
                                     <td>
-                                        <div class="field" onclick="mx_dns.operations.copy_to_clipboard(this)">20 mxb.postagent.cybermancy.org.</div>
+                                        <div class="field" onmousedown="mx_dns.operations.copy_to_clipboard(this)">20 mxb.postagent.cybermancy.org.</div>
                                     </td>
                                     <td>
                                         <div id="mxb-valid" class="high-vis invalid">Invalid</div>
