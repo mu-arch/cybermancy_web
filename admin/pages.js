@@ -685,12 +685,12 @@ const mx_dns = {
                     <div class="menu-part">
                         <div class="menu-head">
                             <h4>2. MX records</h4>
-                            <p>Advertise PostAgent as your domain's MTA.</p>
+                            <p>Advertise PostAgent as your domain's mail exchanger.</p>
                             <div id="mx-config" class="invalid notification-menu-header">Problem</div>
                         </div>
                         <div class="menu-content">
 
-                            <p id="mx-warning" class="warning">WARNING: Additional invalid MX records were found in your DNS configuration. Remove all MX records except the ones in the table below.</p>
+                            <p id="mx-warning" class="warning">WARNING: Non PostAgent MX records were found in your DNS configuration. Remove all MX records except the ones in the table below.</p>
 
 
                             <table>
@@ -760,12 +760,14 @@ const mx_dns = {
             }
             
             .warning {
-                color: red!important;
+                color: #fff!important;
+                background: red;
                 font-size: 20px!important;
                 line-height: 25px!important;
                 margin-bottom: 30px;
                 display: none;
                 font-weight: 700;
+                padding: 20px!important;
             }
 
             .menu-content p {
@@ -922,14 +924,22 @@ const mx_dns = {
                 el.style.top = `${(el.parentNode.clientHeight / 2) - 11}px`
             })
 
+            let all_good = 0
+
             if (dns_data["spf"] && dns_data["dkim"] && !dns_data["non_postagent_dkim"]) {
                 e('auth-config').classList.replace("invalid", "valid")
                 e('auth-config').innerText = "valid"
+                all_good += 1
             }
 
             if (dns_data["mxa"] && dns_data["mxb"] && !dns_data["non_postagent_mx"]) {
                 e('mx-config').classList.replace("invalid", "valid")
                 e('mx-config').innerText = "valid"
+                all_good += 1
+            }
+
+            if (all_good === 2) {
+                notyf.success("DNS is correctly configured!")
             }
 
             e("syncing").style.opacity = "0";
