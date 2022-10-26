@@ -22,6 +22,14 @@ const notyf = new Notyf({
             duration: 5000,
         },
         {
+            type: 'info',
+            background: '#0a3370',
+            icon: {
+                className: 'notyf__icon--success',
+            },
+            duration: 2500,
+        },
+        {
             type: 'error',
             background: 'red',
             duration: 10000,

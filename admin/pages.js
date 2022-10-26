@@ -939,7 +939,7 @@ const mx_dns = {
             }
 
             if (all_good === 2) {
-                notyf.success("DNS is correctly configured!")
+                notyf.open("DNS is correctly configured!")
             }
 
             e("syncing").style.opacity = "0";
@@ -955,7 +955,10 @@ const mx_dns = {
             window.getSelection().addRange(range);
             document.execCommand("copy");
             window.getSelection().removeAllRanges();
-            notyf.success("Text copied to clipboard!")
+            notyf.open({
+                type: 'info',
+                message: 'Text copied to clipboard!'
+            });
         },
         toggle_field: function (self) {
             let menu_head = self.parentNode;
