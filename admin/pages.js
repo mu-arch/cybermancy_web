@@ -600,7 +600,7 @@ const mx_dns = {
         <div class="view-header">
             <h1>DNS Configuration</h1><span id="syncing"><i class="gg-loadbar-alt"></i></span>
             <div class="view-header-controls">
-                <div class="button" onmousedown="location.reload()">
+                <div class="button" onmousedown="navigate(location.pathname.substring(1))">
                     Refresh
                 </div>
             </div>
@@ -937,9 +937,8 @@ const mx_dns = {
                 e('mx-config').innerText = "valid"
                 all_good += 1
             }
-
             if (all_good === 2) {
-                notyf.open("DNS is correctly configured!")
+                notyf.success("DNS is correctly configured!")
             }
 
             e("syncing").style.opacity = "0";

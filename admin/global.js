@@ -65,12 +65,14 @@ async function post(url = '', data = {}, no_headers) {
         headers['Authorization'] = localStorage.getItem('session')
         headers['Account-Id'] = localStorage.getItem('account_id')
     }
+
     const response = await fetch(url, {
         method: 'POST',
         mode: 'cors',
         cache: 'no-cache',
         headers: headers,
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
+        signal: AbortSignal.timeout(10000)
     })
     .catch((error) => {
         console.error('Error:', error);
